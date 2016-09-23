@@ -9,8 +9,6 @@ use Yii;
  * This is the model class for table "address".
  *
  * @property integer $id
- * @property string $first_name
- * @property string $last_name
  * @property string $phone
  * @property integer $country_id
  * @property string $city
@@ -40,10 +38,10 @@ class Address extends Bean
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'phone', 'country_id', 'city', 'region', 'street', 'building', 'zip'], 'required'],
+            [['phone', 'country_id', 'city', 'region', 'street', 'building', 'zip'], 'required'],
             [['country_id', 'user_id'], 'integer'],
             [['street'], 'string'],
-            [['first_name', 'last_name', 'phone', 'city', 'region'], 'string', 'max' => 255],
+            [['phone', 'city', 'region'], 'string', 'max' => 255],
             [['building', 'flat', 'zip'], 'string', 'max' => 10],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['country_id'], 'exist', 'skipOnError' => true, 'targetClass' => Country::className(), 'targetAttribute' => ['country_id' => 'id']],
@@ -57,8 +55,6 @@ class Address extends Bean
     {
         return [
             'id'         => Module::t('Id'),
-            'first_name' => Module::t('First name'),
-            'last_name'  => Module::t('Last name'),
             'phone'      => Module::t('Phone'),
             'country_id' => Module::t('Country'),
             'city'       => Module::t('City'),

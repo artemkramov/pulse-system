@@ -5,18 +5,18 @@ use common\modules\i18n\Module;
 
 /**
  * @var \common\models\Address $address
+ * @var \yii\web\User $user
  */
 
 ?>
 <ul class="my-account status-signed-<?= Yii::$app->user->isGuest ? 'out' : 'in' ?>">
     <div class="cube">
-        <? if (isset($address) && !empty($address) && !empty($address->first_name) && !empty($address->last_name)): ?>
+        <? if (!$user->isGuest): ?>
             <li class="customer-details">
 
                 <a href="<?= FrontendHelper::formLink('/cabinet/account/index') ?>">
                                     <span
-                                        class="first-name"><?= $address->first_name . ' ' ?></span>
-                    <span class="surname"><?= $address->last_name ?></span>
+                                        class="first-name"><?= $user->identity->username . ' ' ?></span>
                 </a>
 
             </li>

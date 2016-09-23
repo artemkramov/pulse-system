@@ -62,7 +62,8 @@ $setting = \common\models\Setting::find()->one();
 
                     <!-- ACCOUNT -->
                     <?= $this->render('chunks/header-account', [
-                        'address' => $address
+                        'address' => $address,
+                        'user'    => $user,
                     ]); ?>
                     <!-- END ACCOUNT -->
                 </div>
@@ -104,7 +105,8 @@ $setting = \common\models\Setting::find()->one();
 
                 <div class="profile-mobile">
                     <?= $this->render('chunks/header-account', [
-                        'address' => $address
+                        'address' => $address,
+                        'user'    => $user,
                     ]) ?>
                 </div>
             </div>
