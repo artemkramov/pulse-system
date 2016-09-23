@@ -1,0 +1,5 @@
+DeviceInputID,DeviceID,DeviceInputNo,DeviceInputName
+13,4,0,"Вход"
+14,4,1,"Выход"
+15,4,2,"Кнопка выхода"
+16,4,3,"Датчик двери"

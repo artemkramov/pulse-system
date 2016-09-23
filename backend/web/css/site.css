@@ -1,0 +1,298 @@
+html,
+body {
+    height: 100%;
+    font-family: 'Arial';
+}
+
+.wrap {
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto -60px;
+    padding: 0 0 60px;
+}
+
+.wrap > .container {
+    padding: 70px 15px 20px;
+}
+
+.footer {
+    height: 60px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.jumbotron {
+    text-align: center;
+    background-color: transparent;
+}
+
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+}
+
+.not-set {
+    color: #c55;
+    font-style: italic;
+}
+
+/* add sorting icons to gridview sort links */
+a.asc:after, a.desc:after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+}
+
+a.asc:after {
+    content: /*"\e113"*/ "\e151";
+}
+
+a.desc:after {
+    content: /*"\e114"*/ "\e152";
+}
+
+.sort-numerical a.asc:after {
+    content: "\e153";
+}
+
+.sort-numerical a.desc:after {
+    content: "\e154";
+}
+
+.sort-ordinal a.asc:after {
+    content: "\e155";
+}
+
+.sort-ordinal a.desc:after {
+    content: "\e156";
+}
+
+.grid-view td {
+    white-space: nowrap;
+}
+
+.grid-view .filters input,
+.grid-view .filters select {
+    min-width: 50px;
+}
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+/* align the logout "link" (button in form) of the navbar */
+.nav > li > form {
+    padding: 8px;
+}
+
+.nav > li > form > button:hover {
+    text-decoration: none;
+}
+.wrap-image {
+    margin-bottom: 10px;
+}
+#ui-datepicker-div {
+    z-index: 1111 !important;
+}
+.job-template {
+    display: none;
+}
+.table-project-employee-wrap {
+    margin-top: 20px;
+}
+.table-project-employee-wrap .table-bordered {
+    border: 1px solid #222D32;
+}
+.table-project-employee-wrap table td {
+    text-align: center;
+}
+.table-project-employee-wrap .current-day {
+    color: #FFF;
+    background-color: #605CA8;
+    font-weight: bold;
+    border-color: #FFF;
+}
+.table-project-employee-wrap .current-day .popover {
+    color: #333;
+}
+.icon-popover:hover {
+    cursor: pointer;
+}
+.popover-content {
+    overflow-y: scroll;
+    max-height: 300px;
+}
+.modal_load {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 )
+    url('../uploads/images/loading.gif')
+    50% 50%
+    no-repeat;
+}
+[readonly]:hover {
+    cursor: not-allowed;
+}
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal_load {
+    display: block;
+}
+.modal-body {
+    overflow: auto;
+    max-height:400px;
+}
+.btn-move {
+    color: #000;
+    cursor: pointer;
+    display: block;
+}
+.dropdown-period ~ .chosen-container {
+    float: left;
+}
+.btn-task {
+    cursor: pointer;
+}
+.dropdown-menu.open {
+    z-index: 9999;
+}
+.dropdown-toggle.btn-default {
+    background-color: #FFF;
+}
+li.error {
+    color: red;
+}
+.btn-generate-total-data {
+    margin-top: 10px;
+}
+/* URL: https://github.com/usrz/bootstrap-languages; */
+.lang-sm {
+    background-position: 0px -1172px;
+    min-width: 22px;
+    height: 16px;
+    min-height: 16px;
+    max-height: 16px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    background-image: url('../uploads/images/languages.png');
+    vertical-align: middle;
+}
+.lang-sm-en {
+    background-position: 0px -596px;
+}
+.lang-sm-nl {
+    background-position: 0px -916px;
+}
+.lang-sm-ua {
+    background-position: 0px -1124px;
+}
+.lang-sm-ru {
+    background-position: 0px -996px;
+}
+
+.navbar-lang {
+    margin-top: 4px;
+}
+.tab-pane-customer {
+    margin-top: 15px;
+}
+.child-roles-list {
+    margin: 0;
+    padding: 0;
+}
+.child-roles-list li {
+    display: inline-block;
+    margin-left: 15px;
+}
+.sidebar-menu li > a > .pull-right {
+    position: absolute;
+    right: 10px;
+    margin-top: -7px;
+}
+.sidebar-menu li > a > .fa-angle-left {
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+.vjs_video_3-dimensions, .vjs_video_3-dimensions .vjs-tech {
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+.btn-remove-video {
+    margin-bottom: 10px;
+}
+.btn-remove-image {
+    margin-bottom: 10px;
+}
+.image-preview {
+    max-width: 200px;
+    display: block;
+}
+.ui-state-default a.product-link, .ui-state-default a.product-link:link {
+    color: blue;
+}
+.email-preview {
+    padding: 10px;
+    border: 1px solid #222;
+}
+.email-preview h3 {
+    margin-top: 0px;
+}
+.related-bean-controls {
+    float: right;
+}
+.related-bean-row {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.related-bean-image {
+    max-width: 150px;
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+}
+.sale-products-block .panel-item {
+    width: calc(50% - 15px);
+    display: inline-block;
+}
+@media (max-width: 480px) {
+    .sale-products-block .panel-item {
+        width: 100%;
+    }
+}
+.order-view .table-order-view img, img.product-thumb {
+    max-height: 200px;
+}
+.multiple-bean-image {
+    max-height: 100px;
+}

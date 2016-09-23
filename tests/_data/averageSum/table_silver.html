@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <script src="table_silver_files/jquery-1.js"></script>
+  <link href="table_silver_files/classic.css" rel="stylesheet">
+  <style>
+    .ob-centering {
+      width: 98%;
+      margin: 0 auto;
+      padding: 10px 0; }
+    
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      padding: 0;
+      margin: 0; }
+      table td, table th {
+        padding: 3px 10px 3px 3px;
+        text-align: right;
+        font-size: 0.8em;
+        border-right: 1px solid #efefef;
+        font-weight: normal;
+        vertical-align: top; }
+        table td.left, table th.left {
+          text-align: left; }
+        table td.highlow, table th.highlow {
+          text-transform: uppercase;
+          text-align: center; }
+      table tr.currency th {
+        background: #cccccc; }
+        table tr.currency th:first-child {
+          background: none; }
+      table tr.currency td, table tr.currency th {
+        border-bottom: 1px solid #efefef; }
+      table tr.odd td {
+        background: #f1f1f1; }
+      table tr.timeofday th {
+        background: #e1e1e1;
+        border-bottom: 1px solid #efefef; }
+      table tr.odd.subrow td {
+        border-bottom: 1px solid white; }
+      table tr.even.subrow td {
+        border-bottom: 1px solid #efefef; }
+      table .bold {
+        font-weight: bold; }
+    
+    h3 {
+      background: #a59266;
+      color: white;
+      font-weight: normal;
+      padding: 5px; }
+    
+    th.timestamp {
+      text-align: left;
+      vertical-align: bottom;
+      border-bottom: 1px solid #efefef;
+      color: #999999;
+      width: 20%;
+      white-space: nowrap; }
+      th.timestamp .selector {
+        vertical-align: middle; }
+        th.timestamp .selector label {
+          display: inline-block;
+          margin-top: -10px; }
+        th.timestamp .selector select {
+          margin-right: 20px; }
+    
+    .clear {
+      clear: both;
+      height: 0; }
+  </style>
+</head>
+<body>
+  <div class="table-frame">
+    <div class="ob-centering">
+      <form action="/table" class="controls">
+        <div class="other-selectors">
+          <div class="selector floatleft">
+            <label>
+              Price for
+              <select id="metal" name="metal">
+                <option value="gold">Gold</option>
+                <option selected="selected" value="silver">Silver</option>
+                <option value="gofo">GOFO/LIBOR</option>
+                <option value="platinum">Platinum</option>
+                <option value="palladium">Palladium</option>
+              </select>
+            </label>
+          </div>
+          <div class="selector floatleft">
+            <label>
+              Year
+              <select id="year" name="year">
+                <option selected="selected">2016</option>
+                <option>2015</option>
+                <option>2014</option>
+                <option>2013</option>
+                <option>2012</option>
+                <option>2011</option>
+                <option>2010</option>
+                <option>2009</option>
+                <option>2008</option>
+                <option>2007</option>
+                <option>2006</option>
+                <option>2005</option>
+                <option>2004</option>
+                <option>2003</option>
+                <option>2002</option>
+                <option>2001</option>
+                <option>2000</option>
+                <option>1999</option>
+                <option>1998</option>
+                <option>1997</option>
+                <option>1996</option>
+                <option>1995</option>
+                <option>1994</option>
+                <option>1993</option>
+                <option>1992</option>
+                <option>1991</option>
+                <option>1990</option>
+                <option>1989</option>
+                <option>1988</option>
+                <option>1987</option>
+                <option>1986</option>
+                <option>1985</option>
+                <option>1984</option>
+                <option>1983</option>
+                <option>1982</option>
+                <option>1981</option>
+                <option>1980</option>
+                <option>1979</option>
+                <option>1978</option>
+                <option>1977</option>
+                <option>1976</option>
+                <option>1975</option>
+                <option>1974</option>
+                <option>1973</option>
+                <option>1972</option>
+                <option>1971</option>
+                <option>1970</option>
+                <option>1969</option>
+                <option>1968</option>
+              </select>
+            </label>
+          </div>
+          <div class="selector floatleft">
+            <label>
+              Date
+              <select id="type" name="type">
+                <option selected="selected" value="daily">Daily Prices</option>
+                <option value="monthly">Monthly Prices</option>
+              </select>
+            </label>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </form>
+      <div class="stuff">
+        <h3>LBMA Silver Prices</h3>
+        <table class="data">
+          <thead>
+            <tr class="currency silver">
+              <th class="timestamp" colspan="1" rowspan="2">
+                <div>Timestamp:<br>04/01/2016 12:01</div>
+              </th>
+              <th class="bold">USD</th>
+              <th>GBP</th>
+              <th>EUR</th>
+            </tr>
+            <tr class="info">
+              <th colspan="1" style="background: #ccc"></th>
+              <th colspan="6" style="text-align: center; background: #ccc; border-bottom: 1px solid #efefef; padding: 5px">Sterling and Euro prices are indicative prices for settlement with effect from 15 August 2014</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="even">
+              <td class="left">05-Jul-16</td>
+              <td class="bold">19.73000</td>
+              <td>14.98900</td>
+              <td>17.68870</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">04-Jul-16</td>
+              <td class="bold">20.36000</td>
+              <td>15.36140</td>
+              <td>18.30610</td>
+            </tr>
+            <tr class="even">
+              <td class="left">01-Jul-16</td>
+              <td class="bold">19.24000</td>
+              <td>14.48250</td>
+              <td>17.29280</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">30-Jun-16</td>
+              <td class="bold">18.36000</td>
+              <td>13.61010</td>
+              <td>16.47520</td>
+            </tr>
+            <tr class="even">
+              <td class="left">29-Jun-16</td>
+              <td class="bold">18.21000</td>
+              <td>13.55110</td>
+              <td>16.41870</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">28-Jun-16</td>
+              <td class="bold">17.57000</td>
+              <td>13.17390</td>
+              <td>15.84310</td>
+            </tr>
+            <tr class="even">
+              <td class="left">27-Jun-16</td>
+              <td class="bold">17.70000</td>
+              <td>13.39790</td>
+              <td>16.06460</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">24-Jun-16</td>
+              <td class="bold">18.04000</td>
+              <td>13.18810</td>
+              <td>16.32140</td>
+            </tr>
+            <tr class="even">
+              <td class="left">23-Jun-16</td>
+              <td class="bold">17.29000</td>
+              <td>11.60560</td>
+              <td>15.16130</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">22-Jun-16</td>
+              <td class="bold">17.20000</td>
+              <td>11.71980</td>
+              <td>15.22800</td>
+            </tr>
+            <tr class="even">
+              <td class="left">21-Jun-16</td>
+              <td class="bold">17.36000</td>
+              <td>11.77750</td>
+              <td>15.34110</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">20-Jun-16</td>
+              <td class="bold">17.33500</td>
+              <td>11.84730</td>
+              <td>15.30280</td>
+            </tr>
+            <tr class="even">
+              <td class="left">17-Jun-16</td>
+              <td class="bold">17.37000</td>
+              <td>12.19030</td>
+              <td>15.42630</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">16-Jun-16</td>
+              <td class="bold">17.71000</td>
+              <td>12.53720</td>
+              <td>15.79280</td>
+            </tr>
+            <tr class="even">
+              <td class="left">15-Jun-16</td>
+              <td class="bold">17.41000</td>
+              <td>12.26400</td>
+              <td>15.50860</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">14-Jun-16</td>
+              <td class="bold">17.25000</td>
+              <td>12.17450</td>
+              <td>15.36890</td>
+            </tr>
+            <tr class="even">
+              <td class="left">13-Jun-16</td>
+              <td class="bold">17.32000</td>
+              <td>12.23420</td>
+              <td>15.36960</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">10-Jun-16</td>
+              <td class="bold">17.32000</td>
+              <td>12.01110</td>
+              <td>15.33010</td>
+            </tr>
+            <tr class="even">
+              <td class="left">09-Jun-16</td>
+              <td class="bold">17.05000</td>
+              <td>11.78630</td>
+              <td>15.03000</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">08-Jun-16</td>
+              <td class="bold">16.75000</td>
+              <td>11.49540</td>
+              <td>14.72790</td>
+            </tr>
+            <tr class="even">
+              <td class="left">07-Jun-16</td>
+              <td class="bold">16.31000</td>
+              <td>11.18270</td>
+              <td>14.35740</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">06-Jun-16</td>
+              <td class="bold">16.40000</td>
+              <td>11.38810</td>
+              <td>14.46720</td>
+            </tr>
+            <tr class="even">
+              <td class="left">03-Jun-16</td>
+              <td class="bold">16.10000</td>
+              <td>11.17280</td>
+              <td>14.45110</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">02-Jun-16</td>
+              <td class="bold">15.98000</td>
+              <td>11.07340</td>
+              <td>14.26910</td>
+            </tr>
+            <tr class="even">
+              <td class="left">01-Jun-16</td>
+              <td class="bold">15.95000</td>
+              <td>11.04110</td>
+              <td>14.29600</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">31-May-16</td>
+              <td class="bold">16.06000</td>
+              <td>10.98950</td>
+              <td>14.39970</td>
+            </tr>
+            <tr class="even">
+              <td class="left">27-May-16</td>
+              <td class="bold">16.30000</td>
+              <td>11.12400</td>
+              <td>14.58480</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">26-May-16</td>
+              <td class="bold">16.46000</td>
+              <td>11.20410</td>
+              <td>14.72670</td>
+            </tr>
+            <tr class="even">
+              <td class="left">25-May-16</td>
+              <td class="bold">16.20500</td>
+              <td>11.05690</td>
+              <td>14.54410</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">24-May-16</td>
+              <td class="bold">16.27000</td>
+              <td>11.14310</td>
+              <td>14.55150</td>
+            </tr>
+            <tr class="even">
+              <td class="left">23-May-16</td>
+              <td class="bold">16.31000</td>
+              <td>11.27320</td>
+              <td>14.55470</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">20-May-16</td>
+              <td class="bold">16.56000</td>
+              <td>11.35800</td>
+              <td>14.76730</td>
+            </tr>
+            <tr class="even">
+              <td class="left">19-May-16</td>
+              <td class="bold">16.60000</td>
+              <td>11.34650</td>
+              <td>14.81750</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">18-May-16</td>
+              <td class="bold">17.05000</td>
+              <td>11.77240</td>
+              <td>15.12600</td>
+            </tr>
+            <tr class="even">
+              <td class="left">17-May-16</td>
+              <td class="bold">17.08000</td>
+              <td>11.79560</td>
+              <td>15.08570</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">16-May-16</td>
+              <td class="bold">17.32000</td>
+              <td>12.06970</td>
+              <td>15.29630</td>
+            </tr>
+            <tr class="even">
+              <td class="left">13-May-16</td>
+              <td class="bold">17.09000</td>
+              <td>11.85900</td>
+              <td>15.06390</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">12-May-16</td>
+              <td class="bold">17.23000</td>
+              <td>11.90570</td>
+              <td>15.12330</td>
+            </tr>
+            <tr class="even">
+              <td class="left">11-May-16</td>
+              <td class="bold">17.51000</td>
+              <td>12.13780</td>
+              <td>15.36370</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">10-May-16</td>
+              <td class="bold">17.04000</td>
+              <td>11.81530</td>
+              <td>15.00000</td>
+            </tr>
+            <tr class="even">
+              <td class="left">09-May-16</td>
+              <td class="bold">17.33000</td>
+              <td>11.99140</td>
+              <td>15.21640</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">06-May-16</td>
+              <td class="bold">17.31000</td>
+              <td>11.93460</td>
+              <td>15.14830</td>
+            </tr>
+            <tr class="even">
+              <td class="left">05-May-16</td>
+              <td class="bold">17.38000</td>
+              <td>12.01770</td>
+              <td>15.21090</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">04-May-16</td>
+              <td class="bold">17.18000</td>
+              <td>11.86300</td>
+              <td>14.95990</td>
+            </tr>
+            <tr class="even">
+              <td class="left">03-May-16</td>
+              <td class="bold">17.49000</td>
+              <td>11.91900</td>
+              <td>15.10230</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">29-Apr-16</td>
+              <td class="bold">17.85500</td>
+              <td>12.21690</td>
+              <td>15.66780</td>
+            </tr>
+            <tr class="even">
+              <td class="left">28-Apr-16</td>
+              <td class="bold">17.35000</td>
+              <td>11.92440</td>
+              <td>15.29310</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">27-Apr-16</td>
+              <td class="bold">17.34000</td>
+              <td>11.87180</td>
+              <td>15.33560</td>
+            </tr>
+            <tr class="even">
+              <td class="left">26-Apr-16</td>
+              <td class="bold">16.95000</td>
+              <td>11.63910</td>
+              <td>15.02130</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">25-Apr-16</td>
+              <td class="bold">16.86000</td>
+              <td>11.66540</td>
+              <td>14.98130</td>
+            </tr>
+            <tr class="even">
+              <td class="left">22-Apr-16</td>
+              <td class="bold">17.19000</td>
+              <td>11.95910</td>
+              <td>15.25690</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">21-Apr-16</td>
+              <td class="bold">17.32000</td>
+              <td>12.04950</td>
+              <td>15.31250</td>
+            </tr>
+            <tr class="even">
+              <td class="left">20-Apr-16</td>
+              <td class="bold">16.97000</td>
+              <td>11.80600</td>
+              <td>14.93050</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">19-Apr-16</td>
+              <td class="bold">16.62000</td>
+              <td>11.56740</td>
+              <td>14.66510</td>
+            </tr>
+            <tr class="even">
+              <td class="left">18-Apr-16</td>
+              <td class="bold">16.20000</td>
+              <td>11.40930</td>
+              <td>14.32870</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">15-Apr-16</td>
+              <td class="bold">16.17000</td>
+              <td>11.39780</td>
+              <td>14.33380</td>
+            </tr>
+            <tr class="even">
+              <td class="left">14-Apr-16</td>
+              <td class="bold">16.13000</td>
+              <td>11.39370</td>
+              <td>14.32120</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">13-Apr-16</td>
+              <td class="bold">15.98000</td>
+              <td>11.21090</td>
+              <td>14.13660</td>
+            </tr>
+            <tr class="even">
+              <td class="left">12-Apr-16</td>
+              <td class="bold">15.96000</td>
+              <td>11.14760</td>
+              <td>13.98280</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">11-Apr-16</td>
+              <td class="bold">15.56000</td>
+              <td>10.93080</td>
+              <td>13.66110</td>
+            </tr>
+            <tr class="even">
+              <td class="left">08-Apr-16</td>
+              <td class="bold">15.16000</td>
+              <td>10.77780</td>
+              <td>13.33800</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">07-Apr-16</td>
+              <td class="bold">15.22000</td>
+              <td>10.81200</td>
+              <td>13.38260</td>
+            </tr>
+            <tr class="even">
+              <td class="left">06-Apr-16</td>
+              <td class="bold">15.07000</td>
+              <td>10.70840</td>
+              <td>13.27870</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">05-Apr-16</td>
+              <td class="bold">15.19000</td>
+              <td>10.69340</td>
+              <td>13.37150</td>
+            </tr>
+            <tr class="even">
+              <td class="left">04-Apr-16</td>
+              <td class="bold">14.96000</td>
+              <td>10.51600</td>
+              <td>13.16790</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">01-Apr-16</td>
+              <td class="bold">15.38000</td>
+              <td>10.76280</td>
+              <td>13.47700</td>
+            </tr>
+            <tr class="even">
+              <td class="left">31-Mar-16</td>
+              <td class="bold">15.38000</td>
+              <td>10.67910</td>
+              <td>13.51730</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">30-Mar-16</td>
+              <td class="bold">15.38000</td>
+              <td>10.68280</td>
+              <td>13.58780</td>
+            </tr>
+            <tr class="even">
+              <td class="left">29-Mar-16</td>
+              <td class="bold">15.06000</td>
+              <td>10.55950</td>
+              <td>13.44040</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">24-Mar-16</td>
+              <td class="bold">15.28000</td>
+              <td>10.82000</td>
+              <td>13.70280</td>
+            </tr>
+            <tr class="even">
+              <td class="left">23-Mar-16</td>
+              <td class="bold">15.58000</td>
+              <td>10.98960</td>
+              <td>13.91820</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">22-Mar-16</td>
+              <td class="bold">15.89000</td>
+              <td>11.11890</td>
+              <td>14.16090</td>
+            </tr>
+            <tr class="even">
+              <td class="left">21-Mar-16</td>
+              <td class="bold">15.81000</td>
+              <td>10.98600</td>
+              <td>14.02220</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">18-Mar-16</td>
+              <td class="bold">15.94000</td>
+              <td>11.01510</td>
+              <td>14.13370</td>
+            </tr>
+            <tr class="even">
+              <td class="left">17-Mar-16</td>
+              <td class="bold">15.73000</td>
+              <td>10.94110</td>
+              <td>13.88590</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">16-Mar-16</td>
+              <td class="bold">15.29000</td>
+              <td>10.84400</td>
+              <td>13.78470</td>
+            </tr>
+            <tr class="even">
+              <td class="left">15-Mar-16</td>
+              <td class="bold">15.32000</td>
+              <td>10.82000</td>
+              <td>13.80800</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">14-Mar-16</td>
+              <td class="bold">15.60000</td>
+              <td>10.87410</td>
+              <td>14.04270</td>
+            </tr>
+            <tr class="even">
+              <td class="left">11-Mar-16</td>
+              <td class="bold">15.50000</td>
+              <td>10.83760</td>
+              <td>13.95520</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">10-Mar-16</td>
+              <td class="bold">15.27000</td>
+              <td>10.74820</td>
+              <td>13.91600</td>
+            </tr>
+            <tr class="even">
+              <td class="left">09-Mar-16</td>
+              <td class="bold">15.27000</td>
+              <td>10.73610</td>
+              <td>13.91600</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">08-Mar-16</td>
+              <td class="bold">15.66000</td>
+              <td>11.01420</td>
+              <td>14.22080</td>
+            </tr>
+            <tr class="even">
+              <td class="left">07-Mar-16</td>
+              <td class="bold">15.66000</td>
+              <td>11.05540</td>
+              <td>14.29480</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">04-Mar-16</td>
+              <td class="bold">15.43000</td>
+              <td>10.90460</td>
+              <td>14.04640</td>
+            </tr>
+            <tr class="even">
+              <td class="left">03-Mar-16</td>
+              <td class="bold">14.97000</td>
+              <td>10.64720</td>
+              <td>13.75670</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">02-Mar-16</td>
+              <td class="bold">14.82000</td>
+              <td>10.58270</td>
+              <td>13.65900</td>
+            </tr>
+            <tr class="even">
+              <td class="left">01-Mar-16</td>
+              <td class="bold">14.99000</td>
+              <td>10.72710</td>
+              <td>13.78260</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">29-Feb-16</td>
+              <td class="bold">14.75000</td>
+              <td>10.64750</td>
+              <td>13.55080</td>
+            </tr>
+            <tr class="even">
+              <td class="left">26-Feb-16</td>
+              <td class="bold">15.17000</td>
+              <td>10.86210</td>
+              <td>13.75960</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">25-Feb-16</td>
+              <td class="bold">15.16000</td>
+              <td>10.85650</td>
+              <td>13.74560</td>
+            </tr>
+            <tr class="even">
+              <td class="left">24-Feb-16</td>
+              <td class="bold">15.32000</td>
+              <td>11.02870</td>
+              <td>13.96920</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">23-Feb-16</td>
+              <td class="bold">15.21000</td>
+              <td>10.78110</td>
+              <td>13.83730</td>
+            </tr>
+            <tr class="even">
+              <td class="left">22-Feb-16</td>
+              <td class="bold">15.00000</td>
+              <td>10.63150</td>
+              <td>13.59310</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">19-Feb-16</td>
+              <td class="bold">15.37000</td>
+              <td>10.75730</td>
+              <td>13.83810</td>
+            </tr>
+            <tr class="even">
+              <td class="left">18-Feb-16</td>
+              <td class="bold">15.25000</td>
+              <td>10.61240</td>
+              <td>13.74370</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">17-Feb-16</td>
+              <td class="bold">15.25000</td>
+              <td>10.65460</td>
+              <td>13.68080</td>
+            </tr>
+            <tr class="even">
+              <td class="left">16-Feb-16</td>
+              <td class="bold">15.35000</td>
+              <td>10.64270</td>
+              <td>13.75450</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">15-Feb-16</td>
+              <td class="bold">15.26000</td>
+              <td>10.55400</td>
+              <td>13.63470</td>
+            </tr>
+            <tr class="even">
+              <td class="left">12-Feb-16</td>
+              <td class="bold">15.64000</td>
+              <td>10.75650</td>
+              <td>13.86520</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">11-Feb-16</td>
+              <td class="bold">15.65000</td>
+              <td>10.85600</td>
+              <td>13.79460</td>
+            </tr>
+            <tr class="even">
+              <td class="left">10-Feb-16</td>
+              <td class="bold">15.12000</td>
+              <td>10.40390</td>
+              <td>13.42690</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">09-Feb-16</td>
+              <td class="bold">15.34000</td>
+              <td>10.63140</td>
+              <td>13.67810</td>
+            </tr>
+            <tr class="even">
+              <td class="left">08-Feb-16</td>
+              <td class="bold">14.94000</td>
+              <td>10.36280</td>
+              <td>13.43040</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">05-Feb-16</td>
+              <td class="bold">14.91000</td>
+              <td>10.26290</td>
+              <td>13.31610</td>
+            </tr>
+            <tr class="even">
+              <td class="left">04-Feb-16</td>
+              <td class="bold">14.74000</td>
+              <td>10.10490</td>
+              <td>13.18660</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">03-Feb-16</td>
+              <td class="bold">14.41000</td>
+              <td>9.93790</td>
+              <td>13.19230</td>
+            </tr>
+            <tr class="even">
+              <td class="left">02-Feb-16</td>
+              <td class="bold">14.26000</td>
+              <td>9.88700</td>
+              <td>13.05740</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">01-Feb-16</td>
+              <td class="bold">14.33000</td>
+              <td>10.03850</td>
+              <td>13.18430</td>
+            </tr>
+            <tr class="even">
+              <td class="left">29-Jan-16</td>
+              <td class="bold">14.08000</td>
+              <td>9.84410</td>
+              <td>12.89610</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">28-Jan-16</td>
+              <td class="bold">13.58000</td>
+              <td>9.49920</td>
+              <td>12.44840</td>
+            </tr>
+            <tr class="even">
+              <td class="left">27-Jan-16</td>
+              <td class="bold">14.38000</td>
+              <td>10.04750</td>
+              <td>13.22060</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">26-Jan-16</td>
+              <td class="bold">14.33000</td>
+              <td>10.06740</td>
+              <td>13.23790</td>
+            </tr>
+            <tr class="even">
+              <td class="left">25-Jan-16</td>
+              <td class="bold">14.22000</td>
+              <td>9.98530</td>
+              <td>13.14480</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">22-Jan-16</td>
+              <td class="bold">14.17000</td>
+              <td>9.91260</td>
+              <td>13.08040</td>
+            </tr>
+            <tr class="even">
+              <td class="left">21-Jan-16</td>
+              <td class="bold">14.01000</td>
+              <td>9.93050</td>
+              <td>12.84850</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">20-Jan-16</td>
+              <td class="bold">14.05000</td>
+              <td>9.92650</td>
+              <td>12.88050</td>
+            </tr>
+            <tr class="even">
+              <td class="left">19-Jan-16</td>
+              <td class="bold">14.03000</td>
+              <td>9.82220</td>
+              <td>12.91660</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">18-Jan-16</td>
+              <td class="bold">13.88000</td>
+              <td>9.70630</td>
+              <td>12.74330</td>
+            </tr>
+            <tr class="even">
+              <td class="left">15-Jan-16</td>
+              <td class="bold">13.80000</td>
+              <td>9.61270</td>
+              <td>12.65590</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">14-Jan-16</td>
+              <td class="bold">14.02000</td>
+              <td>9.73480</td>
+              <td>12.82590</td>
+            </tr>
+            <tr class="even">
+              <td class="left">13-Jan-16</td>
+              <td class="bold">13.83000</td>
+              <td>9.61350</td>
+              <td>12.77720</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">12-Jan-16</td>
+              <td class="bold">13.88000</td>
+              <td>9.62150</td>
+              <td>12.78560</td>
+            </tr>
+            <tr class="even">
+              <td class="left">11-Jan-16</td>
+              <td class="bold">13.97000</td>
+              <td>9.58890</td>
+              <td>12.82000</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">08-Jan-16</td>
+              <td class="bold">14.04000</td>
+              <td>9.61710</td>
+              <td>12.91510</td>
+            </tr>
+            <tr class="even">
+              <td class="left">07-Jan-16</td>
+              <td class="bold">14.03000</td>
+              <td>9.63200</td>
+              <td>12.90950</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">06-Jan-16</td>
+              <td class="bold">14.00500</td>
+              <td>9.55710</td>
+              <td>13.02060</td>
+            </tr>
+            <tr class="even">
+              <td class="left">05-Jan-16</td>
+              <td class="bold">14.01000</td>
+              <td>9.55140</td>
+              <td>13.02170</td>
+            </tr>
+            <tr class="odd">
+              <td class="left">04-Jan-16</td>
+              <td class="bold">14.00000</td>
+              <td>9.47930</td>
+              <td>12.82290</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<script>
+  var bbb = "";
+</script>
+<script src="table_silver_files/js.js"></script>
+<img style="position: absolute; top: 71.7167px; left: 5.83333px; width: 1572px; height: 2806px; z-index: 1000;" src="table_silver_files/o.png"></body></html>

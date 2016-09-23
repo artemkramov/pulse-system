@@ -1,0 +1,142 @@
+body {
+  font: 1em Arial, Helevetica, sans-serif;
+  margin: 0;
+}
+.plot-frame {
+  width: 900px;
+}
+.plot-frame h3 {
+	margin: 0;
+	padding-bottom: 10px;
+	border-bottom: 1px dotted #999;
+}
+
+.plot-frame .date-selector {
+	padding: 30px 15px 0;
+}
+.plot-frame .other-selectors, .table-frame .other-selectors {
+	margin: 10px 0;
+	padding: 10px 10px 30px 30px;
+	border-top: 1px dotted #999;
+	border-bottom: 1px dotted #999;
+	text-align: center;
+}
+
+.table-frame .other-selectors {
+	padding: 10px 0;
+}
+.plot-frame .other-selectors label, .table-frame .other-selectors label {
+	margin-right: 20px;
+	font-size: 0.9em;
+}
+
+/**
+ * default development theme for jQRangeSlider
+ * Using fam fam icon set from Mark James, http://www.famfamfam.com/lab/icons/silk/ (Creative Commons Attribution 2.5 License)
+ * Modified by OB
+ */
+
+
+.ui-rangeSlider{
+	height:22px;
+}
+
+.ui-rangeSlider .ui-rangeSlider-innerBar{
+	height:14px;
+	margin:3px 6px;
+	background:#b4b8ba;
+	border-top: 1px solid #999;
+	border-bottom: 1px solid #999;
+}
+
+.ui-rangeSlider .ui-rangeSlider-handle{
+	width:6px;
+	height:22px;
+	background:#999;
+	background:rgba(0,0,0, 0.3);
+	cursor:col-resize;
+}
+
+.ui-rangeSlider .ui-rangeSlider-bar{
+	margin: 1px 0;
+	background:#8dc63f;
+	background:rgba(141,198,63, 0.6);
+	height:20px;
+	cursor:move;
+	cursor:grab;
+	cursor: -moz-grab;
+}
+
+.ui-rangeSlider .ui-rangeSlider-bar.ui-draggable-dragging{
+	cursor:	-moz-grabbing;
+	cursor:grabbing;
+}
+
+.ui-rangeSlider-arrow{
+	height:16px;
+	margin:2px 0;
+	width:16px;
+	background-repeat:no-repeat;
+}
+
+.ui-rangeSlider-arrow.ui-rangeSlider-leftArrow{
+	background-image: url('/img/icons-classic/resultset_previous.png');
+	background-position:center left;
+}
+
+.ui-rangeSlider-arrow.ui-rangeSlider-rightArrow{
+	background-image: url('/img/icons-classic/resultset_next.png');
+	background-position:center right;
+}
+
+.ui-rangeSlider-arrow-inner{
+	display: none;
+}
+
+.ui-rangeSlider-container{
+	height:22px;
+}
+
+.ui-rangeSlider-withArrows .ui-rangeSlider-container{
+	margin:0 11px;
+}
+
+.ui-rangeSlider-noArrow .ui-rangeSlider-container{
+	margin:0;
+}
+
+.ui-rangeSlider-label{
+	margin:0 2px 2px;
+	background-image:url('/img/icons-classic/label.png');
+	background-position:bottom center;
+	background-repeat:no-repeat;
+  white-space: nowrap;
+  bottom:20px;
+  padding: 4px 6px 8px;
+  cursor:col-resize;
+  color: #fff;
+  font-size: 12px;
+}
+
+.ui-rangeSlider-label-inner{
+	display:none;
+}
+
+/*
+ * Edit slider
+ */
+
+input.ui-editRangeSlider-inputValue{
+	width:3em;
+	vertical-align: middle;
+	text-align:center;
+}
+
+.floatleft{
+	float: left;
+}
+
+.hidden {
+	display: none;
+}
+

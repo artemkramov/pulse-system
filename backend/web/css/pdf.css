@@ -1,0 +1,35 @@
+body {
+    font-family: "Arial";
+    font-size: 13px;
+}
+table {
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 10px;
+}
+table.table-confirm th {
+    background-color: #d9d9d9;
+    font-weight: 100;
+}
+table.table-invoice-head, table.table-invoice-head th, table.table-invoice-head td  {
+    border: none;
+}
+.lined td {
+    border-bottom: 1px solid #333333;
+}
+table.table-invoice-head th, table.table-invoice-head td {
+    padding: 5px 0px;
+}
+table.table-invoice-lines, table.table-invoice-lines th, table.table-invoice-lines td {
+    border: none;
+}
+.lined-invoice td {
+    border-bottom: 2px solid #000000;
+}
+table.table-invoice-lines th, table.table-invoice-lines td {
+    padding: 5px 0px;
+}
