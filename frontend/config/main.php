@@ -23,6 +23,9 @@ return [
         'website' => [
             'class' => 'frontend\modules\website\Module',
         ],
+        'api'     => [
+            'class' => 'frontend\modules\api\Module',
+        ],
     ],
     'components'          => [
         'user'         => [
@@ -47,6 +50,9 @@ return [
         'request'      => [
             'baseUrl' => '',
             'class'   => 'common\components\LangRequest',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
         'i18n'         => [
             'class'        => \common\components\I18N::className(),
@@ -60,6 +66,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName'  => false,
             'rules'           => [
+                '/api/<action>'        => 'api/<action>',
                 '/<url:[a-zA-Z0-9-]+>' => 'page/default/show',
             ]
         ],

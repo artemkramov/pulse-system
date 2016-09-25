@@ -58,9 +58,6 @@ return [
         'dashboard' => [
             'class' => 'backend\modules\dashboard\Module',
         ],
-        'api'       => [
-            'class' => 'backend\modules\api\Module',
-        ],
         'content'   => [
             'class' => 'common\modules\content\Module',
         ],

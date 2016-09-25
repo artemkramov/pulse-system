@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Сен 23 2016 г., 18:29
+-- Время создания: Сен 25 2016 г., 15:04
 -- Версия сервера: 5.6.17
 -- Версия PHP: 5.5.12
 
@@ -656,6 +656,30 @@ INSERT INTO `exchange_rate` (`id`, `ccy`, `base_ccy`, `buy`, `sale`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `heart_beat`
+--
+
+CREATE TABLE IF NOT EXISTS `heart_beat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` int(11) NOT NULL,
+  `updated_at` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `value` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Дамп данных таблицы `heart_beat`
+--
+
+INSERT INTO `heart_beat` (`id`, `created_at`, `updated_at`, `user_id`, `value`) VALUES
+(2, 1474808311, 1474808311, 47, 0),
+(3, 1474808523, 1474808523, 47, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `job`
 --
 
@@ -664,7 +688,7 @@ CREATE TABLE IF NOT EXISTS `job` (
   `name` varchar(255) NOT NULL,
   `method` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Дамп данных таблицы `job`
@@ -719,7 +743,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `menu_type_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `menu_type_id` (`menu_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
 
 --
 -- Дамп данных таблицы `menu`
@@ -752,7 +776,7 @@ CREATE TABLE IF NOT EXISTS `menulang` (
   KEY `language` (`language`),
   KEY `menu_id` (`menu_id`),
   KEY `menu_id_2` (`menu_id`,`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=88 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=85 ;
 
 --
 -- Дамп данных таблицы `menulang`
@@ -2085,7 +2109,10 @@ INSERT INTO `message` (`id`, `language`, `translation`) VALUES
 (883, 'ua', 'Пацієнти'),
 (884, 'en', ''),
 (884, 'ru', 'Пациент'),
-(884, 'ua', 'Пацієнт');
+(884, 'ua', 'Пацієнт'),
+(885, 'en', ''),
+(885, 'ru', 'Значение'),
+(885, 'ua', 'Значення');
 
 -- --------------------------------------------------------
 
@@ -2268,7 +2295,7 @@ CREATE TABLE IF NOT EXISTS `source_message` (
   `category` varchar(255) DEFAULT NULL,
   `message` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=885 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=886 ;
 
 --
 -- Дамп данных таблицы `source_message`
@@ -2715,7 +2742,8 @@ INSERT INTO `source_message` (`id`, `category`, `message`) VALUES
 (881, 'common/modules/i18n', 'Invalid Configuration (#101)'),
 (882, 'common/modules/i18n', 'MAC'),
 (883, 'common/modules/i18n', 'Customers'),
-(884, 'common/modules/i18n', 'Customer');
+(884, 'common/modules/i18n', 'Customer'),
+(885, 'common/modules/i18n', 'Value');
 
 -- --------------------------------------------------------
 
@@ -2731,7 +2759,7 @@ CREATE TABLE IF NOT EXISTS `task` (
   `crontab` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `job_id` (`job_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Дамп данных таблицы `task`
@@ -2798,6 +2826,12 @@ ALTER TABLE `country`
 --
 ALTER TABLE `customer`
   ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `heart_beat`
+--
+ALTER TABLE `heart_beat`
+  ADD CONSTRAINT `heart_beat_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `menulang`
