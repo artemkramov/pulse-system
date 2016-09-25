@@ -2,6 +2,7 @@
 
 namespace frontend\modules\api\actions;
 
+use common\components\WebsocketClient;
 use common\models\Customer;
 use common\models\HeartBeat;
 use yii\rest\CreateAction;
@@ -42,8 +43,24 @@ class CreateHeartBeatAction extends CreateAction
         $customer = Customer::find()->where([
             'mac_address' => $requestBody[$this->macAddressKey]
         ])
-        ->one();
+            ->one();
         $model->user_id = $customer->user_id;
+
+        $url = "ws://" . $_SERVER['HTTP_HOST'] . ":9000/echobot";
+        $wsClient = new WebsocketClient($url);
+        $data = json_encode([
+            'method' => 'pushNotification',
+            'data'   => [
+                'userID' => 1,
+                'data'   => [
+                    'text' => 5
+                ]
+            ]
+        ]);
+        $wsClient->send($data);
+
+        echo "Send notice";
+        exit;
 
         if ($model->save()) {
             $response = Yii::$app->getResponse();

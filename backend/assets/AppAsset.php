@@ -41,6 +41,7 @@ class AppAsset extends AssetBundle
         'js/Role.js',
         'js/RelatedBean.js',
         'js/Sale.js',
+        'js/Socket.js',
         'js/chosen/chosen.jquery.min.js',
         '//cdn.tinymce.com/4/tinymce.min.js',
         'js/filemanager.min.js',

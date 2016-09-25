@@ -1,0 +1,16 @@
+.header {
+    border-bottom: 1px solid #369;
+}
+.container {
+    margin: 0 auto;
+    width: 960px;
+}
+.menu-list {
+    height: 70px;
+    display: table;
+}
+.menu-list li {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}

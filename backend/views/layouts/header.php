@@ -76,4 +76,5 @@ use common\models\User;
     var current_url = '<?= \yii\helpers\Url::current()?>';
     var javascriptJSONLabels = '<?= json_encode($javascriptLabels) ?>';
     var frontendDirectoryAsset = '<?= $frontendDirectoryAsset ?>';
+    var currentUserID = '<?= !Yii::$app->user->isGuest ? Yii::$app->user->id : '' ?>';
 </script>
