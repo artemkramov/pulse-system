@@ -3,8 +3,10 @@
 namespace backend\modules\users\controllers;
 
 use backend\controllers\CRUDController;
+use common\components\WebsocketClient;
 use common\models\Address;
 use common\models\Customer;
+use common\models\HeartBeat;
 use common\models\search\Customer as CustomerSearch;
 use common\models\User;
 use Yii;
@@ -124,6 +126,57 @@ class CustomersController extends CRUDController
             Yii::$app->response->format = Response::FORMAT_JSON;
             $errors = ArrayHelper::merge(ActiveForm::validate($model), ActiveForm::validate($user), ActiveForm::validate($address));
             return $errors;
+        }
+        return [];
+    }
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public function actionHeartBeat($id)
+    {
+        $customer = $this->findModel($id);
+
+
+        return $this->render("heart-beat", [
+            'model' => $customer,
+        ]);
+    }
+
+    public function actionHeartBeatBot($id)
+    {
+        /**
+         * @var Customer $customer
+         */
+        $customer = $this->findModel($id);
+        echo "Bot................." . PHP_EOL;
+        $counter = 400;
+        /**
+         * Create bot pulse
+         */
+        $url = "ws://" . $_SERVER['HTTP_HOST'] . ":9000/echobot";
+        $wsClient = new WebsocketClient($url);
+
+        while ($counter--) {
+            $value = $counter % 20 == 0 ? 1 : 0;
+            $data = json_encode([
+                'method' => 'pushNotification',
+                'data'   => [
+                    'userID'   => 1,
+                    'customer' => $customer->attributes,
+                    'point'    => [
+                        'x' => false,
+                        'y' => $value
+                    ]
+                ]
+            ]);
+            $wsClient->send($data);
+            $hModel = new HeartBeat();
+            $hModel->user_id = $customer->user_id;
+            $hModel->value = $value;
+            $hModel->save();
+            usleep(1000);
         }
     }
 

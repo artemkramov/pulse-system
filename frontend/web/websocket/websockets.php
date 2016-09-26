@@ -121,7 +121,7 @@ abstract class WebSocketServer {
                 break;
               default:
 
-                $this->stderr('Socket error: ' . socket_strerror($sockErrNo));
+                //$this->stderr('Socket error: ' . socket_strerror($sockErrNo));
             }
             
           }

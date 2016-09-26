@@ -115,7 +115,7 @@ class echoServer extends WebSocketServer
 $echo = new echoServer("0.0.0.0", "9000", "128000");
 
 try {
-    set_time_limit(300);
+    set_time_limit(0);
     $echo->run();
 } catch (Exception $e) {
     $echo->stdout($e->getMessage());

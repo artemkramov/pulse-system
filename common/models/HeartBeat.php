@@ -20,6 +20,9 @@ use yii\helpers\ArrayHelper;
  */
 class HeartBeat extends Bean
 {
+
+    const HEART_BEAT_VALUE = 1;
+
     /**
      * @inheritdoc
      */

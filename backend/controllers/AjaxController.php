@@ -8,9 +8,11 @@ use backend\models\Characteristic;
 use backend\models\Product;
 use backend\models\SocialLink;
 use backend\models\Stock;
+use common\models\HeartBeat;
 use common\models\Lang;
 use common\models\Menu;
 use common\models\SaleProduct;
+use common\models\search\Customer;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\base\ViewContextInterface;
@@ -86,103 +88,51 @@ class AjaxController extends AuthController implements ViewContextInterface
     }
 
     /**
-     * @return array|\yii\db\ActiveRecord[]
-     */
-    public function actionLoadSocialLinks()
-    {
-        $items = SocialLink::find()->orderBy('sort')->all();
-        return $items;
-    }
-
-    /**
+     * @param int $customerID
      * @return array
      */
-    public function actionLoadStocks()
+    public function actionLoadBeatsPerMinute($customerID)
     {
-        $stocks = Stock::find()->localized(Lang::getCurrent()->url)->orderBy('sort')->all();
-        $response = [];
-        foreach ($stocks as $stock) {
-            $attributeData = $stock->attributes;
-            $attributeData['name'] = $stock->title;
-            $response[] = $attributeData;
+        /**
+         * @var Customer $customer
+         */
+        $customer = Customer::findOne($customerID);
+        $rows = HeartBeat::find()
+            ->where("FROM_UNIXTIME(`created_at`) > (NOW() - INTERVAL 1 MINUTE)")
+            ->andWhere([
+                'user_id' => !empty($customer) ? $customer->user_id : null,
+            ])
+            ->all();
+        $count = 0;
+        $bpm = 0;
+        $ibi = 0;
+        $startTime = 0;
+        $isStart = false;
+        foreach ($rows as $heartBeat) {
+            /**
+             * @var HeartBeat $heartBeat
+             */
+            if (!$isStart && !$heartBeat->value) {
+                $isStart = true;
+            }
+            if (!$isStart) {
+                continue;
+            }
+            if (empty($startTime) && !$heartBeat->value) {
+                $startTime = $heartBeat->created_at;
+            }
+            if ($heartBeat->value && !empty($startTime)) {
+                $ibi += $heartBeat->updated_at - $startTime;
+                $count++;
+                $startTime = 0;
+            }
         }
-        return $response;
-    }
-
-    /**
-     * @param integer $id - ID of the characteristic group
-     * @return array
-     */
-    public function actionLoadCharacteristics($id)
-    {
-        $items = Characteristic::find()->localized(Lang::getCurrent()->url)->where([
-            'characteristic_group_id' => $id
-        ])->orderBy('sort')->all();
-        $response = [];
-        foreach ($items as $item) {
-            $attributeData = $item->attributes;
-            $attributeData['name'] = $item->title;
-            $response[] = $attributeData;
-        }
-        return $response;
-    }
-
-    /**
-     * @return array
-     */
-    public function actionLoadCategories()
-    {
-        $collection = Category::findAllWithTitle(null);
-        $tree = SiteHelper::buildTreeArrayFromCollection($collection, 'id', 'title');
-        return $tree;
-    }
-
-    /**
-     * @param $id
-     * @return Product
-     */
-    public function actionLoadProductData($id)
-    {
-        $product = Product::findOne($id);
-        if (empty($product)) {
-            $product = new Product();
-        }
-        $productData = $product->attributes;
-        $productData['title'] = $product->title;
-        $productData['url'] = !empty($product->id) ? Url::to(['products/products/view', 'id' => $product->id]) : '#';
-        return $productData;
-    }
-
-    public function actionLoadCollectionProducts($collectionID)
-    {
-        $products = Product::getProductsByCollection($collectionID);
-        $html = "";
-        $this->viewPath = \Yii::getAlias('@backend/modules/products/views/sale-products');
-        $attributes = (new SaleProduct())->getAttributes();
-        $attributesData = [];
-        $params = [
-            'modelClass' => 'Sale',
-            'counter'    => '{{template_replace_keyword}}',
-            'attribute'  => 'saleProducts',
-            'min'        => 1,
-        ];
-        foreach ($attributes as $attribute => $value) {
-            $attributesData[$attribute] = [
-                'id'   => MultipleBeanHelper::formIdAttribute($attribute, $params['attribute'], $params['modelClass'], $params['counter']),
-                'name' => MultipleBeanHelper::formName($attribute, $params['attribute'], $params['modelClass'], $params['counter'])
-            ];
-        }
-        foreach ($products as $product) {
-            $html .= $this->renderPartial('view', ArrayHelper::merge([
-                'model'          => null,
-                'attributesData' => $attributesData,
-                'product'        => $product,
-            ], $params));
+        if ($count > 0) {
+            $bpm = round(60 * $count / $ibi);
         }
         return [
-            'data' => $html,
+            'count' => $bpm
         ];
-
     }
 
 

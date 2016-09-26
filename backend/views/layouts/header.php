@@ -77,4 +77,5 @@ use common\models\User;
     var javascriptJSONLabels = '<?= json_encode($javascriptLabels) ?>';
     var frontendDirectoryAsset = '<?= $frontendDirectoryAsset ?>';
     var currentUserID = '<?= !Yii::$app->user->isGuest ? Yii::$app->user->id : '' ?>';
+    var backendUrl = '<?= \Yii::$app->request->hostInfo . "/" . \common\models\Lang::getCurrent()->url . \yii\helpers\Url::home()?>';
 </script>

@@ -60,13 +60,14 @@ class SiteHelper extends \yii\base\Component
     /**
      * @return string
      */
-    public static function generateUUID() {
-        return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
-            mt_rand( 0, 0xffff ),
-            mt_rand( 0, 0x0fff ) | 0x4000,
-            mt_rand( 0, 0x3fff ) | 0x8000,
-            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+    public static function generateUUID()
+    {
+        return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
         );
     }
 
@@ -293,6 +294,7 @@ class SiteHelper extends \yii\base\Component
             ['label' => Module::t('Users'), 'icon' => 'fa fa-users', 'url' => '#',
              'items' => [
                  ['label' => Module::t('Users'), 'icon' => 'fa fa-user', 'url' => ['/users/users/index']],
+                 ['label' => Module::t('Customers'), 'icon' => 'fa fa-user-md', 'url' => ['/users/customers/index']],
              ]
             ],
             ['label' => Module::t('Content'), 'icon' => 'fa fa-navicon', 'url' => '#',

@@ -45,7 +45,16 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge($labels, [
                 }
             ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'buttons'  => [
+                    'heart-beat' => function ($url, $model) {
+                        $icon = "heartbeat";
+                        return Html::a('<span class="fa fa-' . $icon . '"></span> ', $url);
+                    }
+                ],
+                'template' => '{heart-beat} {view} {update} {delete}'
+            ],
         ],
     ]); ?>
 </div>

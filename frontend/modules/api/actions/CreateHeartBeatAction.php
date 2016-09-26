@@ -46,23 +46,25 @@ class CreateHeartBeatAction extends CreateAction
             ->one();
         $model->user_id = $customer->user_id;
 
-        $url = "ws://" . $_SERVER['HTTP_HOST'] . ":9000/echobot";
-        $wsClient = new WebsocketClient($url);
-        $data = json_encode([
-            'method' => 'pushNotification',
-            'data'   => [
-                'userID' => 1,
-                'data'   => [
-                    'text' => 5
-                ]
-            ]
-        ]);
-        $wsClient->send($data);
-
-        echo "Send notice";
-        exit;
-
         if ($model->save()) {
+            /**
+             * Send data by the websocket
+             */
+            $url = "ws://" . $_SERVER['HTTP_HOST'] . ":9000/echobot";
+            $wsClient = new WebsocketClient($url);
+            $data = json_encode([
+                'method' => 'pushNotification',
+                'data'   => [
+                    'userID'   => 1,
+                    'customer' => $customer->attributes,
+                    'point'    => [
+                        'x' => $model->created_at,
+                        'y' => (int)$model->value,
+                    ]
+                ]
+            ]);
+            $wsClient->send($data);
+
             $response = Yii::$app->getResponse();
             $response->setStatusCode(201);
             $id = implode(',', array_values($model->getPrimaryKey(true)));

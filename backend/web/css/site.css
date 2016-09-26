@@ -296,3 +296,17 @@ li.error {
 .multiple-bean-image {
     max-height: 100px;
 }
+.block-beat-per-minute {
+    margin: 20px 0px;
+}
+.block-beat-per-minute img {
+    max-width: 100px;
+    transition: all 0.3s;
+}
+.block-beat-per-minute.active img {
+    transform: scale(1.3);
+}
+.beat-per-minute {
+    font-size: 2em;
+    font-weight: bold;
+}
