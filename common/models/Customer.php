@@ -108,4 +108,35 @@ class Customer extends Bean
         }
         parent::afterDelete();
     }
+
+    /**
+     * @return integer
+     */
+    public function getBeatsPerMinute()
+    {
+        $rows = HeartBeat::find()
+            ->where("FROM_UNIXTIME(`created_at`) > (NOW() - INTERVAL 1 MINUTE)")
+            ->andWhere([
+                'user_id' => !empty($this) ? $this->user_id : null,
+            ])
+            ->all();
+        $count = 0;
+        $bpm = 0;
+        $ibi = 0;
+        $startTime = 0;
+        foreach ($rows as $heartBeat) {
+            /**
+             * @var HeartBeat $heartBeat
+             */
+            if (!empty($startTime)) {
+                $ibi += $heartBeat->updated_at - $startTime;
+                $count++;
+            }
+            $startTime = $heartBeat->updated_at;
+        }
+        if ($ibi > 0) {
+            $bpm = round(60 * $count / $ibi);
+        }
+        return $bpm;
+    }
 }

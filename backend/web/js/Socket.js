@@ -1,15 +1,76 @@
+/**
+ * Site url
+ * @type {string}
+ */
 var site_url = window.location.hostname;
-var positions = ["bottomRight", "bottomLeft", "bottomCenter"];
-var counter = 0;
+
+/**
+ *
+ * @type {{init, onOpen, onMessageReceive, sendMessage, event, updateChart, updateHeartBeat, updateBeatPerMinute, pushZeroToChart}}
+ */
 var Socket = (function () {
+    /**
+     * Socket object
+     */
     var socket;
+
+    /**
+     * Array of points on plot
+     * @type {Array}
+     */
     var dataPoints = [];
-    var dataLength = 200; // number of dataPoints visible at any point
+
+    /**
+     * Number of dataPoints visible at any point
+     * @type {number}
+     */
+    var dataLength = 150;
+
+    /**
+     * Chart object
+     */
     var chart;
+
+    /**
+     * Block with the heart icon
+     * @type {string}
+     */
     var blockBeatPerMinute = ".block-beat-per-minute";
+
+    /**
+     * Label to show beats per minute
+     * @type {string}
+     */
     var spanBeatPerMinute = ".beat-per-minute";
 
+    /**
+     * Interval for pushing the zero
+     * @type {number}
+     */
+    var interval = 100;
+
+    /**
+     * Flag if the heart beat happened
+     * @type {boolean}
+     */
+    var isHeartBeat = false;
+
+    /**
+     * Max response time from server
+     * @type {number}
+     */
+    var maxResponseInterval = interval * 40;
+
+    /**
+     * Time of the last server respond
+     * @type {number}
+     */
+    var intervalCounter = 0;
+
     return {
+        /**
+         * Init events
+         */
         init: function () {
             var server = "ws://" + site_url + ":9000/echobot";
             socket = new WebSocket(server);
@@ -17,6 +78,9 @@ var Socket = (function () {
             socket.onmessage = this.onMessageReceive;
             this.event();
         },
+        /**
+         * On socket open function
+         */
         onOpen: function () {
             var data = {
                 method: 'confirm',
@@ -24,19 +88,36 @@ var Socket = (function () {
             };
             Socket.sendMessage(JSON.stringify(data));
         },
+        /**
+         * On receive function
+         * @param message
+         */
         onMessageReceive: function (message) {
             var response = $.parseJSON(message.data);
             if (response.type == 'notice') {
                 if (response.data.customer.id == customerID) {
                     response.data.point.x = Date.now();
+                    isHeartBeat = true;
+                    Socket.pushZeroToChart();
                     Socket.updateChart(response.data.point);
+                    Socket.pushZeroToChart();
+                    isHeartBeat = false;
+                    intervalCounter = 0;
+                    Socket.updateBeatPerMinute(response.data.bpm);
                 }
             }
 
         },
+        /**
+         * Send message function
+         * @param message
+         */
         sendMessage: function (message) {
             socket.send(message);
         },
+        /**
+         * Register events
+         */
         event: function () {
 
             var self = this;
@@ -44,13 +125,29 @@ var Socket = (function () {
             $(document).ready(function () {
                 self.updateChart();
 
+                /**
+                 * Push zero data to the plot
+                 */
                 setInterval(function () {
-                    self.updateBeatPerMinute();
-                }, 2000);
+                    if (!isHeartBeat) {
+                        if (intervalCounter > maxResponseInterval) {
+                            self.updateBeatPerMinute('-');
+                        }
+                        else {
+                            intervalCounter += interval;
+                        }
+                        self.pushZeroToChart();
+                    }
+
+                }, interval);
 
             });
 
         },
+        /**
+         * Add point to the chart
+         * @param point
+         */
         updateChart: function (point) {
             chart = new CanvasJS.Chart("chartContainer", {
                 title: {
@@ -76,23 +173,30 @@ var Socket = (function () {
             }
             chart.render();
         },
+        /**
+         * Make the heart beat effect
+         */
         updateHeartBeat: function () {
             $(blockBeatPerMinute).addClass('active');
             setTimeout(function () {
                 $(blockBeatPerMinute).removeClass('active');
             }, 100);
         },
-        updateBeatPerMinute: function () {
-            App.sendAjax({
-                url: backendUrl + '/ajax/load-beats-per-minute',
-                data: {
-                    customerID: customerID
-                },
-                type: "get",
-                success: function (response) {
-                    $(spanBeatPerMinute).text(response.count);
-                }
-            }, false)
+        /**
+         * Update the BPM label
+         * @param bpm
+         */
+        updateBeatPerMinute: function (bpm) {
+            $(spanBeatPerMinute).text(bpm);
+        },
+        /**
+         * Push zero point to the chart
+         */
+        pushZeroToChart: function () {
+            this.updateChart({
+                x: Date.now(),
+                y: 0
+            });
         }
     };
 })();

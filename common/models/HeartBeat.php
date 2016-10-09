@@ -14,14 +14,11 @@ use yii\helpers\ArrayHelper;
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $user_id
- * @property integer $value
  *
  * @property User $user
  */
 class HeartBeat extends Bean
 {
-
-    const HEART_BEAT_VALUE = 1;
 
     /**
      * @inheritdoc
@@ -37,8 +34,7 @@ class HeartBeat extends Bean
     public function rules()
     {
         return [
-            [['value'], 'required'],
-            [['created_at', 'updated_at', 'user_id', 'value'], 'integer'],
+            [['created_at', 'updated_at', 'user_id'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -53,7 +49,6 @@ class HeartBeat extends Bean
             'created_at' => Module::t('Createdat'),
             'updated_at' => Module::t('Updatedat'),
             'user_id'    => Module::t('User'),
-            'value'      => Module::t('Value'),
         ];
     }
 

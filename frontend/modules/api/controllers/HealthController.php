@@ -66,7 +66,7 @@ class HealthController extends ActiveController
                     $macAddress = $requestBody[$this->macAddressKey];
                     if (!empty($macAddress)) {
                         $customer = Customer::find()->where([
-                            'mac_address' => $macAddress
+                            'mac_address' => strtoupper($macAddress)
                         ])
                             ->one();
                         if (!empty($customer)) {
@@ -74,6 +74,11 @@ class HealthController extends ActiveController
                         }
                     }
                 }
+//                $fp = fopen('lidn.txt', 'w+');
+//                fwrite($fp, print_r($requestBody, true) . ' ' . time());
+//                fclose($fp);
+//                print_r($requestBody);
+//                exit;
                 if ($isForbidden) {
                     throw new ForbiddenHttpException();
                 }

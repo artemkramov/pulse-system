@@ -87,54 +87,6 @@ class AjaxController extends AuthController implements ViewContextInterface
         return $response;
     }
 
-    /**
-     * @param int $customerID
-     * @return array
-     */
-    public function actionLoadBeatsPerMinute($customerID)
-    {
-        /**
-         * @var Customer $customer
-         */
-        $customer = Customer::findOne($customerID);
-        $rows = HeartBeat::find()
-            ->where("FROM_UNIXTIME(`created_at`) > (NOW() - INTERVAL 1 MINUTE)")
-            ->andWhere([
-                'user_id' => !empty($customer) ? $customer->user_id : null,
-            ])
-            ->all();
-        $count = 0;
-        $bpm = 0;
-        $ibi = 0;
-        $startTime = 0;
-        $isStart = false;
-        foreach ($rows as $heartBeat) {
-            /**
-             * @var HeartBeat $heartBeat
-             */
-            if (!$isStart && !$heartBeat->value) {
-                $isStart = true;
-            }
-            if (!$isStart) {
-                continue;
-            }
-            if (empty($startTime) && !$heartBeat->value) {
-                $startTime = $heartBeat->created_at;
-            }
-            if ($heartBeat->value && !empty($startTime)) {
-                $ibi += $heartBeat->updated_at - $startTime;
-                $count++;
-                $startTime = 0;
-            }
-        }
-        if ($count > 0) {
-            $bpm = round(60 * $count / $ibi);
-        }
-        return [
-            'count' => $bpm
-        ];
-    }
-
 
 }
  

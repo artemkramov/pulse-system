@@ -151,7 +151,7 @@ class CustomersController extends CRUDController
          */
         $customer = $this->findModel($id);
         echo "Bot................." . PHP_EOL;
-        $counter = 400;
+        $counter = 40;
         /**
          * Create bot pulse
          */
@@ -159,7 +159,7 @@ class CustomersController extends CRUDController
         $wsClient = new WebsocketClient($url);
 
         while ($counter--) {
-            $value = $counter % 20 == 0 ? 1 : 0;
+            $value = 1;
             $data = json_encode([
                 'method' => 'pushNotification',
                 'data'   => [
@@ -168,15 +168,15 @@ class CustomersController extends CRUDController
                     'point'    => [
                         'x' => false,
                         'y' => $value
-                    ]
+                    ],
+                    'bpm'   => $customer->getBeatsPerMinute(),
                 ]
             ]);
             $wsClient->send($data);
             $hModel = new HeartBeat();
             $hModel->user_id = $customer->user_id;
-            $hModel->value = $value;
             $hModel->save();
-            usleep(1000);
+            usleep(500000);
         }
     }
 

@@ -60,7 +60,8 @@ class CreateHeartBeatAction extends CreateAction
                     'point'    => [
                         'x' => $model->created_at,
                         'y' => (int)$model->value,
-                    ]
+                    ],
+                    'bpm'      => $customer->getBeatsPerMinute(),
                 ]
             ]);
             $wsClient->send($data);
@@ -75,5 +76,6 @@ class CreateHeartBeatAction extends CreateAction
 
         return $model;
     }
+
 
 }
