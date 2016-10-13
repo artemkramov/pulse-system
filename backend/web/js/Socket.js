@@ -157,7 +157,11 @@ var Socket = (function () {
                     type: "line",
                     xValueType: "dateTime",
                     dataPoints: dataPoints
-                }]
+                }],
+                axisY: {
+                    viewportMinimum: -1,
+                    viewportMaximum: 1.5
+                },
             });
             if (typeof point != 'undefined') {
                 dataPoints.push({
@@ -197,7 +201,7 @@ var Socket = (function () {
                 x: Date.now(),
                 y: 0
             });
-        }
+        },
     };
 })();
 if (currentUserID)

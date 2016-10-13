@@ -756,7 +756,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-fileinput/zipball/6fc8922716bf0b3638c67ff0895a9ff688b6c027",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-fileinput/zipball/e3fa29869a1430a98f4fa54f959f478a1d55f88b",
                 "reference": "b0fb41e4290fc4aa35a49a977bf4484cb30f8ff9",
                 "shasum": ""
             },
@@ -1093,7 +1093,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/fcc5c6585574054bd2dce530d5fb3f5da745bc49",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/d3373c97e1bd4fceb0687d2e289998bccda514f1",
                 "reference": "fcc5c6585574054bd2dce530d5fb3f5da745bc49",
                 "shasum": ""
             },
@@ -1507,7 +1507,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii2mod/yii2-ftp/zipball/dc457427f8f839489e5232b184e4b3cedee7667d",
+                "url": "https://api.github.com/repos/yii2mod/yii2-ftp/zipball/85d31c1af16a50d6e6788c5deba297fd91faf498",
                 "reference": "dc457427f8f839489e5232b184e4b3cedee7667d",
                 "shasum": ""
             },

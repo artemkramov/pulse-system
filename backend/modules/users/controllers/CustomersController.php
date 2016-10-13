@@ -3,6 +3,7 @@
 namespace backend\modules\users\controllers;
 
 use backend\controllers\CRUDController;
+use backend\models\HeartBeatRange;
 use common\components\WebsocketClient;
 use common\models\Address;
 use common\models\Customer;
@@ -144,6 +145,45 @@ class CustomersController extends CRUDController
         ]);
     }
 
+    public function actionHeartBeatReport($id)
+    {
+        /**
+         * @var Customer $customer
+         */
+        $customer = $this->findModel($id);
+        $rangeModel = new HeartBeatRange();
+        $dataPoints = [];
+
+        if (Yii::$app->request->post() && $rangeModel->load(Yii::$app->request->post())) {
+            if ($rangeModel->validate()) {
+                $beats = HeartBeat::find()
+                    ->where([
+                        '>', 'ibi', $rangeModel->startTime
+                    ])
+                    ->andWhere([
+                        '<', 'ibi', $rangeModel->endTime
+                    ])
+                    ->andWhere([
+                        'user_id' => $customer->user_id
+                    ])
+                    ->all();
+                $dataPoints = HeartBeat::getDataPointsFromBeats($beats);
+                return $this->render("heart-beat-report", [
+                    'model'      => $customer,
+                    'rangeModel' => $rangeModel,
+                    'dataPoints' => $dataPoints,
+                ]);
+            }
+        }
+
+
+        return $this->render("heart-beat-report", [
+            'model'      => $customer,
+            'rangeModel' => $rangeModel,
+        ]);
+    }
+
+
     public function actionHeartBeatBot($id)
     {
         /**
@@ -160,6 +200,9 @@ class CustomersController extends CRUDController
 
         while ($counter--) {
             $value = 1;
+            $hModel = new HeartBeat();
+            $hModel->user_id = $customer->user_id;
+            $hModel->save();
             $data = json_encode([
                 'method' => 'pushNotification',
                 'data'   => [
@@ -169,13 +212,11 @@ class CustomersController extends CRUDController
                         'x' => false,
                         'y' => $value
                     ],
-                    'bpm'   => $customer->getBeatsPerMinute(),
+                    'bpm'      => $customer->getBeatsPerMinute(),
+                    'beatID'   => $hModel->id,
                 ]
             ]);
             $wsClient->send($data);
-            $hModel = new HeartBeat();
-            $hModel->user_id = $customer->user_id;
-            $hModel->save();
             usleep(500000);
         }
     }

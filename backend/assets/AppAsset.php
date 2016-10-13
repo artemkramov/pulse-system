@@ -38,7 +38,6 @@ class AppAsset extends AssetBundle
         'js/App.js',
         'js/Template.js',
         'js/Product.js',
-        'js/Report.js',
         'js/Role.js',
         'js/RelatedBean.js',
         'js/Sale.js',

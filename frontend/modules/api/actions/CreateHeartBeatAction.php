@@ -59,12 +59,14 @@ class CreateHeartBeatAction extends CreateAction
                     'customer' => $customer->attributes,
                     'point'    => [
                         'x' => $model->created_at,
-                        'y' => (int)$model->value,
+                        'y' => 1,
                     ],
                     'bpm'      => $customer->getBeatsPerMinute(),
+                    'beatID'   => $model->id,
                 ]
             ]);
             $wsClient->send($data);
+            $wsClient->close();
 
             $response = Yii::$app->getResponse();
             $response->setStatusCode(201);

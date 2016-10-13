@@ -94,7 +94,7 @@ return [
                     'skin' => 'skin-purple',
                 ],
             ],
-            'linkAssets' => true,
+            //'linkAssets' => true,
         ],
 
         'urlManager' => [

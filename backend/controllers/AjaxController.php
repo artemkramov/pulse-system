@@ -87,6 +87,36 @@ class AjaxController extends AuthController implements ViewContextInterface
         return $response;
     }
 
+    /**
+     * @param $beatID
+     * @param $ibi
+     * @return array
+     */
+    public function actionPushIbiData($beatID, $ibi)
+    {
+        /**
+         * @var HeartBeat $heartBeat
+         */
+        $heartBeat = HeartBeat::findOne($beatID);
+        $heartBeat->ibi = $ibi;
+        $heartBeat->save();
+        return [];
+    }
+
+    /**
+     * @param $customerID
+     * @param $dateStart
+     * @param $dateEnd
+     */
+    public function actionLoadGraphData($customerID, $dateStart, $dateEnd)
+    {
+        /**
+         * @var Customer $customer
+         */
+        $customer = Customer::findOne($customerID);
+        $dataPoints = $customer->getGraphData($dateStart, $dateEnd);
+    }
+
 
 }
  

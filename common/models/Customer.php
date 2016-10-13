@@ -115,7 +115,7 @@ class Customer extends Bean
     public function getBeatsPerMinute()
     {
         $rows = HeartBeat::find()
-            ->where("FROM_UNIXTIME(`created_at`) > (NOW() - INTERVAL 1 MINUTE)")
+            ->where("`ibi` > (NOW() - INTERVAL 1 MINUTE)")
             ->andWhere([
                 'user_id' => !empty($this) ? $this->user_id : null,
             ])
@@ -129,14 +129,28 @@ class Customer extends Bean
              * @var HeartBeat $heartBeat
              */
             if (!empty($startTime)) {
-                $ibi += $heartBeat->updated_at - $startTime;
+                $ibi += HeartBeat::getTimeBetweenBeats($startTime, $heartBeat);
                 $count++;
             }
-            $startTime = $heartBeat->updated_at;
+            $startTime = $heartBeat;
         }
         if ($ibi > 0) {
-            $bpm = round(60 * $count / $ibi);
+            $bpm = round(60 * $count / ($ibi / HeartBeat::COEFFICIENT_MILLISECONDS));
         }
         return $bpm;
+    }
+
+    public function getGraphData($dateStart, $dateEnd)
+    {
+        $rows = HeartBeat::find()
+            ->where([
+                '>', 'created_at', $dateStart
+            ])
+            ->andWhere([
+                '<', 'created_at', $dateEnd
+            ])
+            ->all();
+
+        exit;
     }
 }
