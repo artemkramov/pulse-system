@@ -51,9 +51,13 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge($labels, [
                     'heart-beat' => function ($url, $model) {
                         $icon = "heartbeat";
                         return Html::a('<span class="fa fa-' . $icon . '"></span> ', $url);
+                    },
+                    'heart-beat-report' => function ($url, $model) {
+                        $icon = "stats";
+                        return Html::a('<span class="glyphicon glyphicon-' . $icon . '"></span> ', $url);
                     }
                 ],
-                'template' => '{heart-beat} {view} {update} {delete}'
+                'template' => '{heart-beat} {heart-beat-report} {view} {update} {delete}'
             ],
         ],
     ]); ?>

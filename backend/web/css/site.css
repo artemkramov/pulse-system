@@ -310,3 +310,6 @@ li.error {
     font-size: 2em;
     font-weight: bold;
 }
+#chart-container {
+    margin: 10px 0px;
+}

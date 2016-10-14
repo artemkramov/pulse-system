@@ -105,16 +105,18 @@ class AjaxController extends AuthController implements ViewContextInterface
 
     /**
      * @param $customerID
-     * @param $dateStart
-     * @param $dateEnd
+     * @param $startTime
+     * @param $endTime
+     * @return array
      */
-    public function actionLoadGraphData($customerID, $dateStart, $dateEnd)
+    public function actionLoadGraphData($customerID, $startTime, $endTime)
     {
         /**
          * @var Customer $customer
          */
         $customer = Customer::findOne($customerID);
-        $dataPoints = $customer->getGraphData($dateStart, $dateEnd);
+        $dataPoints = $customer->getGraphData($startTime, $endTime);
+        return $dataPoints;
     }
 
 

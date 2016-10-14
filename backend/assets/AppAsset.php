@@ -35,6 +35,7 @@ class AppAsset extends AssetBundle
         'js/turn/turn.min.js',
         'http://vjs.zencdn.net/5.10.8/video.js',
         'js/canvasjs.min.js',
+        'js/date.js',
         'js/App.js',
         'js/Template.js',
         'js/Product.js',

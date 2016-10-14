@@ -140,17 +140,19 @@ class Customer extends Bean
         return $bpm;
     }
 
-    public function getGraphData($dateStart, $dateEnd)
+    public function getGraphData($startTime, $endTime)
     {
-        $rows = HeartBeat::find()
+        $beats = HeartBeat::find()
             ->where([
-                '>', 'created_at', $dateStart
+                '>', 'ibi', $startTime
             ])
             ->andWhere([
-                '<', 'created_at', $dateEnd
+                '<', 'ibi', $endTime
+            ])
+            ->andWhere([
+                'user_id' => $this->user_id
             ])
             ->all();
-
-        exit;
+        return HeartBeat::getDataPointsFromBeats($beats);
     }
 }

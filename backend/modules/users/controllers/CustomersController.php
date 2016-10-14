@@ -145,6 +145,25 @@ class CustomersController extends CRUDController
         ]);
     }
 
+    /**
+     * Action for the validation of the form for the graph building
+     * @return array
+     */
+    public function actionValidateHeartBeatRange()
+    {
+        $model = new HeartBeatRange();
+        if (\Yii::$app->request->isAjax && $model->load(\Yii::$app->request->post())) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+            $errors = ActiveForm::validate($model);
+            return $errors;
+        }
+    }
+
+    /**
+     * Build the heart beat report
+     * @param $id
+     * @return string
+     */
     public function actionHeartBeatReport($id)
     {
         /**
@@ -152,30 +171,6 @@ class CustomersController extends CRUDController
          */
         $customer = $this->findModel($id);
         $rangeModel = new HeartBeatRange();
-        $dataPoints = [];
-
-        if (Yii::$app->request->post() && $rangeModel->load(Yii::$app->request->post())) {
-            if ($rangeModel->validate()) {
-                $beats = HeartBeat::find()
-                    ->where([
-                        '>', 'ibi', $rangeModel->startTime
-                    ])
-                    ->andWhere([
-                        '<', 'ibi', $rangeModel->endTime
-                    ])
-                    ->andWhere([
-                        'user_id' => $customer->user_id
-                    ])
-                    ->all();
-                $dataPoints = HeartBeat::getDataPointsFromBeats($beats);
-                return $this->render("heart-beat-report", [
-                    'model'      => $customer,
-                    'rangeModel' => $rangeModel,
-                    'dataPoints' => $dataPoints,
-                ]);
-            }
-        }
-
 
         return $this->render("heart-beat-report", [
             'model'      => $customer,
