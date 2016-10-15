@@ -58,6 +58,15 @@ if (!isset($address)) {
 
     <div class="row">
         <div class="col-sm-6">
+            <?= $form->field($model, 'gender_id')->dropDownList(\common\models\Gender::listAllLocalized()) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'age')->textInput() ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
             <?= $form->field($user, 'username')->textInput()->label(Module::t('Username')) ?>
         </div>
         <div class="col-sm-6">

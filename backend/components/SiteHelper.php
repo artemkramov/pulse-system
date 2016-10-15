@@ -308,6 +308,7 @@ class SiteHelper extends \yii\base\Component
             ['label' => Module::t('Login'), 'url' => ['site/login'], 'visible' => \Yii::$app->user->isGuest],
             ['label' => Module::t('Settings'), 'icon' => 'fa fa-cog', 'url' => '#',
              'items' => [
+                 ['label' => Module::t('Heart beat table'), 'icon' => 'fa fa-circle-o', 'url' => ['/settings/settings/heart-beat-rate']],
                  ['label' => Module::t('Settings'), 'icon' => 'fa fa-circle-o', 'url' => ['/settings/settings/index']],
                  ['label' => Module::t('Translations'), 'url' => ['/i18n'], 'icon' => 'fa fa-book'],
              ]

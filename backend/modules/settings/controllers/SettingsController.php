@@ -3,6 +3,9 @@
 namespace backend\modules\settings\controllers;
 
 use backend\controllers\CRUDController;
+use backend\models\HeartBeatRange;
+use common\models\HeartBeatRate;
+use common\modules\i18n\Module;
 use Yii;
 use common\models\Setting;
 use common\models\Search\SettingSearch;
@@ -46,6 +49,31 @@ class SettingsController extends CRUDController
     public function actionDelete($id, $returnModel = false)
     {
         throw new ForbiddenHttpException();
+    }
+
+    public function actionHeartBeatRate()
+    {
+        $postData = Yii::$app->request->post();
+        if (!empty($postData)) {
+            HeartBeatRate::deleteAll();
+            if (array_key_exists('data', $postData)) {
+                foreach ($postData['data'] as $data) {
+                    $rate = new HeartBeatRate();
+                    $loadData = [
+                        'HeartBeatRate' => $data
+                    ];
+                    if ($rate->load($loadData)) {
+                        $rate->save();
+                    }
+                }
+            }
+            \Yii::$app->session->setFlash('success', Module::t('Operation is done successfully.'));
+            return $this->redirect(['heart-beat-rate']);
+        }
+
+        return $this->render('heart-beat-rate', [
+
+        ]);
     }
 
 }

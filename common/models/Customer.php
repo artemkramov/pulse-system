@@ -15,8 +15,11 @@ use yii\helpers\ArrayHelper;
  * @property string $name
  * @property string $notes
  * @property string $date_registrated
+ * @property integer $gender_id
+ * @property integer $age
  *
  * @property User $user
+ * @property Gender $gender
  */
 class Customer extends Bean
 {
@@ -37,8 +40,8 @@ class Customer extends Bean
     public function rules()
     {
         return [
-            [['user_id'], 'integer'],
-            [['mac_address', 'name', 'date_registrated'], 'required'],
+            [['user_id', 'gender_id'], 'integer'],
+            [['mac_address', 'name', 'date_registrated', 'age'], 'required'],
             [['notes'], 'string'],
             [['date_registrated'], 'safe'],
             [['mac_address', 'name'], 'string', 'max' => 255],
@@ -58,6 +61,8 @@ class Customer extends Bean
             'name'             => Module::t('Name'),
             'notes'            => Module::t('Notes'),
             'date_registrated' => Module::t('Dateregistrated'),
+            'gender_id'        => Module::t('Gender'),
+            'age'              => Module::t('Age')
         ];
     }
 
@@ -67,6 +72,14 @@ class Customer extends Bean
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGender()
+    {
+        return $this->hasOne(Gender::className(), ['id' => 'gender_id']);
     }
 
     /**
@@ -140,6 +153,11 @@ class Customer extends Bean
         return $bpm;
     }
 
+    /**
+     * @param $startTime
+     * @param $endTime
+     * @return array
+     */
     public function getGraphData($startTime, $endTime)
     {
         $beats = HeartBeat::find()

@@ -2,6 +2,7 @@
 
 use backend\components\BreadcrumbHelper;
 use common\modules\i18n\Module;
+use yii\bootstrap\Html;
 
 /**
  * @var \common\models\Customer $model
@@ -51,15 +52,25 @@ $this->registerJsFile(\yii\helpers\Url::home() . '/js/Report.js', ['depends' => 
 
 <div class="row">
     <div class="col-sm-12">
-        <?= \yii\helpers\Html::submitButton(Module::t('Show plot'), [
+        <? $iconPrint = Html::tag('i', '', [
+            'class' => 'fa fa-print'
+        ]);
+        $iconPlot = Html::tag('i', '', [
+           'class' => 'fa fa-line-chart'
+        ]);
+        ?>
+        <?= \yii\helpers\Html::submitButton($iconPlot . ' ' . Module::t('Show plot'), [
             'class' => 'btn btn-primary'
         ]) ?>
+        <?= \yii\helpers\Html::button($iconPrint . ' ' . Module::t('Print'), [
+            'class' => 'btn btn-warning btn-print-plot'
+        ])?>
     </div>
 </div>
 
 <? \yii\bootstrap\ActiveForm::end(); ?>
 
-<div id="chart-container" style="height: 300px; width: 100%;"></div>
+<div id="chart-container" style="height: 300px; width: 100%;" data-customer-name="<?= $model->name ?>"></div>
 
 <div class="row">
     <div class="col-sm-12">

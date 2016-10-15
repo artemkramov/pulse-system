@@ -9,6 +9,7 @@ use backend\models\Product;
 use backend\models\SocialLink;
 use backend\models\Stock;
 use common\models\HeartBeat;
+use common\models\HeartBeatRate;
 use common\models\Lang;
 use common\models\Menu;
 use common\models\SaleProduct;
@@ -117,6 +118,14 @@ class AjaxController extends AuthController implements ViewContextInterface
         $customer = Customer::findOne($customerID);
         $dataPoints = $customer->getGraphData($startTime, $endTime);
         return $dataPoints;
+    }
+
+    /**
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function actionLoadRateData()
+    {
+        return HeartBeatRate::find()->orderBy('min_age')->all();
     }
 
 

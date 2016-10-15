@@ -33,6 +33,18 @@ var Report = (function () {
      */
     var inputCustomerID = "#customer-id";
 
+    /**
+     * Button for printing of the plot
+     * @type {string}
+     */
+    var btnPrintPlot = ".btn-print-plot";
+
+    /**
+     * Template for the plot printing
+     * @type {string}
+     */
+    var templatePrintPlot = "#template-print-plot";
+
     return {
         /**
          * Init all events
@@ -69,6 +81,9 @@ var Report = (function () {
                     return false;
                 });
 
+                $(btnPrintPlot).click(function () {
+                    self.printChart();
+                });
 
             });
         },
@@ -91,9 +106,10 @@ var Report = (function () {
          * Add point to the chart
          */
         updateChart: function () {
+            var customerName = $("#chart-container").data("customer-name");
             var chart = new CanvasJS.Chart("chart-container", {
                 title: {
-                    text: "Pulse"
+                    text: customerName
                 },
                 data: [{
                     type: "line",
@@ -103,12 +119,30 @@ var Report = (function () {
                     viewportMinimum: -1,
                     viewportMaximum: 1.5
                 },
-                zoomEnabled:true
+                zoomEnabled: true
             });
             chart.render();
         },
+        /**
+         * Print plot
+         */
         printChart: function () {
-
+            var dataUrl = document.getElementsByClassName('canvasjs-chart-canvas')[0].toDataURL();
+            var compiled = _.template($(templatePrintPlot).html());
+            var windowContent = compiled({
+                img: {
+                    src: dataUrl
+                }
+            });
+            var windowWidth = $(window).width() / 2;
+            var windowHeight = $(window).height() / 2;
+            var printWindow = window.open('', '', 'width=' + windowWidth.toString() + ',height=' + windowHeight.toString());
+            printWindow.document.open();
+            printWindow.document.write(windowContent);
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
         }
     };
 })();

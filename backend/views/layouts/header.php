@@ -62,6 +62,7 @@ use common\models\User;
     <?
     echo $this->render('../includes/alert');
     echo $this->render('../includes/confirm');
+    echo $this->render('../includes/print-plot');
     ?>
 </div>
 <div>

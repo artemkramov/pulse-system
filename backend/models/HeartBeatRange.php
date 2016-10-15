@@ -24,7 +24,7 @@ class HeartBeatRange extends Model
         return [
             [['startTime', 'endTime'], 'required'],
             [['startTime', 'endTime'], 'date', 'format' => 'yyyy-M-d H:m'],
-            ['startTime', 'compare', 'compareAttribute' => 'endTime', 'operator' => '<', 'enableClientValidation' => false]
+            ['startTime', 'compare', 'compareAttribute' => 'endTime', 'operator' => '<=', 'enableClientValidation' => false]
         ];
     }
      public function attributeLabels()
