@@ -131,6 +131,7 @@ class ManyToManyBehavior extends Behavior
 
             // many-to-many
             if (!empty($relation->via) && $relation->multiple) {
+
                 //Assuming junction column is visible from the primary model connection
                 if (is_array($relation->via)) {
                     //via()
@@ -147,6 +148,7 @@ class ManyToManyBehavior extends Behavior
 
                 $connection = $primaryModel::getDb();
                 $transaction = $connection->beginTransaction();
+
                 try {
                     //Get old relations
                     $sql = "SELECT * FROM " . $junctionTable . " WHERE " . $junctionColumn . "=:modelID";

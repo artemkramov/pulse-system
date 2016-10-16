@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use backend\components\ManyToManyBehavior;
+use backend\health\IDisease;
 use common\modules\i18n\Module;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -20,11 +22,14 @@ use yii\helpers\ArrayHelper;
  *
  * @property User $user
  * @property Gender $gender
+ * @property User[] $operators
  */
 class Customer extends Bean
 {
 
     const ROLE_NAME = 'customer';
+
+    const TABLE_CUSTOMER_OPERATOR = 'customer_operator';
 
     /**
      * @inheritdoc
@@ -32,6 +37,27 @@ class Customer extends Bean
     public static function tableName()
     {
         return 'customer';
+    }
+
+    /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        return ArrayHelper::merge(parent::behaviors(), [
+            [
+                'class'     => ManyToManyBehavior::className(),
+                'relations' => [
+                    'operator_ids' => 'operators'
+                ]
+            ]
+        ]);
+    }
+
+    public function getOperators()
+    {
+        return $this->hasMany(User::className(), ['id' => 'operator_id'])
+            ->viaTable('{{%' . self::TABLE_CUSTOMER_OPERATOR . '}}', ['customer_id' => 'id']);
     }
 
     /**
@@ -46,6 +72,7 @@ class Customer extends Bean
             [['date_registrated'], 'safe'],
             [['mac_address', 'name'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['operator_ids'], 'each', 'rule' => ['integer']]
         ];
     }
 
@@ -154,6 +181,40 @@ class Customer extends Bean
     }
 
     /**
+     * Get pulse data for the disease detection
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function getPulseDataForDisease()
+    {
+        $rows = HeartBeat::find()
+            ->where(sprintf("`ibi` > (NOW() - INTERVAL %d MINUTE)", IDisease::INPUT_MINUTES))
+            ->andWhere([
+                'user_id' => !empty($this) ? $this->user_id : null,
+            ])
+            ->all();
+        if (count($rows) <= IDisease::MIN_BEAT_THRESHOLD) {
+            $rows = [];
+        }
+        return $rows;
+    }
+
+    public function testGetPulseDataForTachycardia()
+    {
+        $path = dirname(dirname(__DIR__)) . '/backend/web/uploads/disease/tachicard.json';
+        $data = file_get_contents($path);
+        $items = json_decode($data);
+        return $items;
+    }
+
+    public function testGetPulseDataForBradycardia()
+    {
+        $path = dirname(dirname(__DIR__)) . '/backend/web/uploads/disease/bradicard.json';
+        $data = file_get_contents($path);
+        $items = json_decode($data);
+        return $items;
+    }
+
+    /**
      * @param $startTime
      * @param $endTime
      * @return array
@@ -172,5 +233,26 @@ class Customer extends Bean
             ])
             ->all();
         return HeartBeat::getDataPointsFromBeats($beats);
+    }
+
+    /**
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public function getBoundaryConditions()
+    {
+        $data = HeartBeatRate::find()
+            ->where([
+                '<', 'min_age', $this->age
+            ])
+            ->andWhere([
+                '>=', 'max_age', $this->age
+            ])
+            ->one();
+        if (empty($data)) {
+            $data = HeartBeatRate::find()
+                ->orderBy(['max_age' => SORT_DESC])
+                ->one();
+        }
+        return $data;
     }
 }

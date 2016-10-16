@@ -19,18 +19,12 @@ class CronController extends Controller
      */
     public function actionIndex()
     {
-        $emailViewPath = \Yii::getAlias('@frontend/modules/shop/views/basket/emails/');
-        \Yii::$app->controller->viewPath = $emailViewPath;
-        $html = \Yii::$app->controller->renderPartial('main', [
-            'template' => 'common',
-            'data'     => [
-                'content' => '',
-            ],
-        ]);
-        return;
         $tasks = Task::find()->all();
         $cronComponent = new CronComponent();
         foreach ($tasks as $task) {
+            /**
+             * @var Task $task
+             */
             $cron = CronExpression::factory($task->crontab);
             $method = $task->job->method;
             /** If cron time is ready and the appropriate handler exists */

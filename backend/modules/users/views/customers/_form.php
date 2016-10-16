@@ -85,6 +85,15 @@ if (!isset($address)) {
 
     <div class="row">
         <div class="col-sm-6">
+            <?= $form->field($model, 'operator_ids')->dropDownList(\common\models\User::getOperatorList(), [
+                'class'    => 'form-control chosen-select',
+                'multiple' => true
+            ])->label(Module::t('Operators')) ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
             <?= $form->field($address, 'country_id')->dropDownList(\common\models\Country::getDropdownList()) ?>
         </div>
         <div class="col-sm-6">

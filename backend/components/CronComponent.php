@@ -1,15 +1,11 @@
 <?php
 
 namespace backend\components;
-use backend\models\Customer;
-use backend\models\DateWeight;
-use backend\models\Invoice;
-use backend\models\InvoiceLine;
-use backend\models\InvoiceSentQueue;
-use backend\models\Novelty;
-use backend\models\Template;
-use common\components\Mailer;
-use common\modules\i18n\Module;
+use backend\health\Bradycardia;
+use backend\health\IDisease;
+use backend\health\Tachycardia;
+use common\models\Customer;
+use common\models\Threat;
 
 /**
  * Class for handling and running of all crontab jobs
@@ -19,22 +15,35 @@ class CronComponent
 {
 
     /**
-     * Update exchange rate
+     * Detect the threat for the disease
      */
-    public function crUpdateExchangeRate()
+    public function crDetectDisease()
     {
-        $api = new ExchangeRateApi();
-        $api->run();
-        return true;
-    }
-
-    /**
-     * Send all queued novelties
-     */
-    public function crSendQueuedNovelties()
-    {
-        Novelty::sendQueuedNovelties();
-        return true;
+        $customers = Customer::find()->all();
+        $diseases = [new Tachycardia(), new Bradycardia()];
+        foreach ($customers as $customer) {
+            /**
+             * @var Customer $customer
+             */
+            $pulseData = $customer->getPulseDataForDisease();
+            $pulseData = $customer->testGetPulseDataForTachycardia();
+            //$pulseData = $customer->testGetPulseDataForBradycardia();
+            if (empty($pulseData)) {
+                continue;
+            }
+            foreach ($diseases as $disease) {
+                /**
+                 * @var IDisease $disease
+                 */
+                if ($disease->isDiseaseAvailable($customer, $pulseData)) {
+                    $threat = new Threat();
+                    $threat->customer_id = $customer->id;
+                    $threat->alias = $disease->getAlias();
+                    $threat->bpm = $disease->getBPM($pulseData);
+                    $threat->save();
+                }
+            }
+        }
     }
 
 

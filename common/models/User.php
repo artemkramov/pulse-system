@@ -7,6 +7,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Query;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 use yii\helpers\BaseFileHelper;
 use yii\imagine\Image;
@@ -40,6 +41,7 @@ class User extends Bean implements IdentityInterface, UserRbacInterface
     const ROLE_ADMIN = "admin";
     const ROLE_CUSTOMER = "customer";
     const ROLE_MANAGER = "manager";
+    const ROLE_OPERATOR = "operator";
 
     const SCENARIO_CHANGE_PASSWORD = 'changePassword';
     const SCENARIO_UPDATE_PROFILE = 'updateProfile';
@@ -81,6 +83,30 @@ class User extends Bean implements IdentityInterface, UserRbacInterface
         $current_user = \Yii::$app->user;
         $roles = \Yii::$app->authManager->getRolesByUser($current_user->id);
         return array_key_exists(self::ROLE_MANAGER, $roles);
+    }
+
+    /**
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getOperators()
+    {
+        $items = User::find()
+            ->join('inner join', 'auth_assignment', 'auth_assignment.user_id = ' . self::tableName() . '.id')
+            ->where([
+                'status' => self::STATUS_ACTIVE,
+                'item_name' => self::ROLE_OPERATOR
+            ])
+            ->distinct()
+            ->all();
+        return $items;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getOperatorList()
+    {
+        return ArrayHelper::map(self::getOperators(), 'id', 'username');
     }
 
     /**

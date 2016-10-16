@@ -139,7 +139,6 @@ class CustomersController extends CRUDController
     {
         $customer = $this->findModel($id);
 
-
         return $this->render("heart-beat", [
             'model' => $customer,
         ]);
@@ -186,7 +185,8 @@ class CustomersController extends CRUDController
          */
         $customer = $this->findModel($id);
         echo "Bot................." . PHP_EOL;
-        $counter = 40;
+        $counter = 2400;
+        ini_set('max_execution_time', 180);
         /**
          * Create bot pulse
          */
