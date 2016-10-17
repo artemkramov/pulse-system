@@ -25,6 +25,12 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge(\common\models\Cust
             'id',
             'mac_address',
             'name',
+            'age',
+            [
+                'attribute' => 'operators',
+                'value'     => $model->getOperatorsToString(),
+                'label'     => \common\modules\i18n\Module::t('Operators')
+            ],
         ],
     ]) ?>
 

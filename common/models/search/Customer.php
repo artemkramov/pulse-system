@@ -2,6 +2,7 @@
 
 namespace common\models\search;
 
+use backend\components\AccessHelper;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -59,14 +60,24 @@ class Customer extends CustomerModel
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'user_id' => $this->user_id,
+            'id'               => $this->id,
+            'user_id'          => $this->user_id,
             'date_registrated' => $this->date_registrated,
         ]);
 
         $query->andFilterWhere(['like', 'mac_address', $this->mac_address])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'notes', $this->notes]);
+
+        $params = [
+            'viaTable'     => Customer::TABLE_CUSTOMER_OPERATOR,
+            'primaryTable' => Customer::tableName(),
+            'primaryField' => 'customer_id',
+            'relateField'  => 'customer_id'
+        ];
+
+        $accessHelper = new AccessHelper();
+        $accessHelper->filterSearchMultiple($query, $params);
 
         return $dataProvider;
     }

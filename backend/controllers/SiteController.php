@@ -58,7 +58,7 @@ class SiteController extends Controller
         if (\Yii::$app->user->can('users')) {
             $this->redirect('@web/users/users/index');
         } else {
-            $this->redirect('@web/products/products/index');
+            $this->redirect('@web/users/customers/index');
         }
         //return $this->render('index');
     }

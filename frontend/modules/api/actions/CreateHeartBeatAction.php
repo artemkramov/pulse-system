@@ -47,26 +47,28 @@ class CreateHeartBeatAction extends CreateAction
         $model->user_id = $customer->user_id;
 
         if ($model->save()) {
+            $operators = $customer->getPulseDataReceivers();
             /**
              * Send data by the websocket
              */
             $url = "ws://" . $_SERVER['HTTP_HOST'] . ":9000/echobot";
             $wsClient = new WebsocketClient($url);
-            $data = json_encode([
-                'method' => 'pushNotification',
-                'data'   => [
-                    'userID'   => 1,
-                    'customer' => $customer->attributes,
-                    'point'    => [
-                        'x' => $model->created_at,
-                        'y' => 1,
-                    ],
-                    'bpm'      => $customer->getBeatsPerMinute(),
-                    'beatID'   => $model->id,
-                ]
-            ]);
-            $wsClient->send($data);
-            $wsClient->close();
+            foreach ($operators as $operator) {
+                $data = json_encode([
+                    'method' => 'pushNotification',
+                    'data'   => [
+                        'userID'   => $operator->id,
+                        'customer' => $customer->attributes,
+                        'point'    => [
+                            'x' => false,
+                            'y' => 1,
+                        ],
+                        'bpm'      => $customer->getBeatsPerMinute(),
+                        'beatID'   => $model->id,
+                    ]
+                ]);
+                $wsClient->send($data);
+            }
 
             $response = Yii::$app->getResponse();
             $response->setStatusCode(201);

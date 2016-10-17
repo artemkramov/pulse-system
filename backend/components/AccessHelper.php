@@ -27,7 +27,9 @@ class AccessHelper
 
     public function __construct()
     {
-        $this->filterRoles = [];
+        $this->filterRoles = [
+            'operator' => User::className()
+        ];
     }
 
     /**
@@ -65,7 +67,7 @@ class AccessHelper
             case 'customer':
                 $possibleIds[] = $bean->id;
                 break;
-            case 'manager':
+            case 'operator':
                 foreach ($bean->customers as $customer) {
                     $possibleIds[] = $customer->id;
                 }
@@ -121,7 +123,8 @@ class AccessHelper
         $current_user = \Yii::$app->user;
         $roleName = $this->getUserType();
         $className = $this->filterRoles[$roleName];
-        $bean = $className::find(['user_id' => $current_user->id])->one();
+        $field = $className == User::className() ? 'id' : 'user_id';
+        $bean = $className::find()->where([$field => $current_user->id])->one();
         return $bean;
     }
 

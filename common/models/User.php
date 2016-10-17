@@ -30,6 +30,7 @@ use developeruz\db_rbac\interfaces\UserRbacInterface;
  * @property integer $subscription
  *
  * @property Customer $customer
+ * @property Customer[] $customers
  */
 class User extends Bean implements IdentityInterface, UserRbacInterface
 {
@@ -90,15 +91,37 @@ class User extends Bean implements IdentityInterface, UserRbacInterface
      */
     public static function getOperators()
     {
-        $items = User::find()
+        return self::getUsersByRole(self::ROLE_OPERATOR);
+    }
+
+    /**
+     * @param $roleName
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getUsersByRole($roleName)
+    {
+        return User::find()
             ->join('inner join', 'auth_assignment', 'auth_assignment.user_id = ' . self::tableName() . '.id')
             ->where([
-                'status' => self::STATUS_ACTIVE,
-                'item_name' => self::ROLE_OPERATOR
+                'status'    => self::STATUS_ACTIVE,
+                'item_name' => $roleName
             ])
             ->distinct()
             ->all();
-        return $items;
+    }
+
+    /**
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getAdministrators()
+    {
+        return self::getUsersByRole(self::ROLE_ADMIN);
+    }
+
+    public function getCustomers()
+    {
+        return $this->hasMany(Customer::className(), ['id' => 'customer_id'])
+            ->viaTable('{{%' . Customer::TABLE_CUSTOMER_OPERATOR . '}}', ['operator_id' => 'id']);
     }
 
     /**

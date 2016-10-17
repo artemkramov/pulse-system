@@ -61,6 +61,23 @@ class Customer extends Bean
     }
 
     /**
+     * @return string
+     */
+    public function getOperatorsToString()
+    {
+        $items = ArrayHelper::getColumn($this->operators, 'username');
+        return implode(', ', $items);
+    }
+
+    /**
+     * @return array
+     */
+    public function getPulseDataReceivers()
+    {
+        return ArrayHelper::merge($this->operators, User::getAdministrators());
+    }
+
+    /**
      * @inheritdoc
      */
     public function rules()

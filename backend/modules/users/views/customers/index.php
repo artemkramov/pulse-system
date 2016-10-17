@@ -57,7 +57,9 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge($labels, [
                         return Html::a('<span class="glyphicon glyphicon-' . $icon . '"></span> ', $url);
                     }
                 ],
-                'template' => '{heart-beat} {heart-beat-report} {view} {update} {delete}'
+                'template' => \backend\components\SiteHelper::getListTemplate([
+                    'heart-beat', 'heart-beat-report', 'view', 'update', 'delete'
+                ])
             ],
         ],
     ]); ?>

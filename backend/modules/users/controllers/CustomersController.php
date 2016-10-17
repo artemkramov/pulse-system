@@ -28,6 +28,11 @@ class CustomersController extends CRUDController
     {
         $this->beanClass = Customer::className();
         $this->beanSearchClass = CustomerSearch::className();
+        $this->extraAccessParams = [
+            'viaTable'     => Customer::TABLE_CUSTOMER_OPERATOR,
+            'primaryField' => 'customer_id',
+            'relateField'  => 'operator_id'
+        ];
         parent::init();
     }
 
@@ -137,7 +142,7 @@ class CustomersController extends CRUDController
      */
     public function actionHeartBeat($id)
     {
-        $customer = $this->findModel($id);
+        $customer = $this->getModel($id);
 
         return $this->render("heart-beat", [
             'model' => $customer,
@@ -168,7 +173,7 @@ class CustomersController extends CRUDController
         /**
          * @var Customer $customer
          */
-        $customer = $this->findModel($id);
+        $customer = $this->getModel($id);
         $rangeModel = new HeartBeatRange();
 
         return $this->render("heart-beat-report", [
@@ -186,32 +191,34 @@ class CustomersController extends CRUDController
         $customer = $this->findModel($id);
         echo "Bot................." . PHP_EOL;
         $counter = 2400;
-        ini_set('max_execution_time', 180);
+        ini_set('max_execution_time', 10);
         /**
          * Create bot pulse
          */
         $url = "ws://" . $_SERVER['HTTP_HOST'] . ":9000/echobot";
         $wsClient = new WebsocketClient($url);
-
+        $operators = $customer->getPulseDataReceivers();
         while ($counter--) {
             $value = 1;
             $hModel = new HeartBeat();
             $hModel->user_id = $customer->user_id;
             $hModel->save();
-            $data = json_encode([
-                'method' => 'pushNotification',
-                'data'   => [
-                    'userID'   => 1,
-                    'customer' => $customer->attributes,
-                    'point'    => [
-                        'x' => false,
-                        'y' => $value
-                    ],
-                    'bpm'      => $customer->getBeatsPerMinute(),
-                    'beatID'   => $hModel->id,
-                ]
-            ]);
-            $wsClient->send($data);
+            foreach ($operators as $operator) {
+                $data = json_encode([
+                    'method' => 'pushNotification',
+                    'data'   => [
+                        'userID'   => $operator->id,
+                        'customer' => $customer->attributes,
+                        'point'    => [
+                            'x' => false,
+                            'y' => $value
+                        ],
+                        'bpm'      => $customer->getBeatsPerMinute(),
+                        'beatID'   => $hModel->id,
+                    ]
+                ]);
+                $wsClient->send($data);
+            }
             usleep(500000);
         }
     }

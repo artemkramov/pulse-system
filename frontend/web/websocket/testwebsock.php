@@ -73,22 +73,6 @@ class echoServer extends WebSocketServer
     }
 
     /**
-     * Update ibi for the event
-     * @param $sender
-     * @param $msg
-     */
-    public function updateIbi($sender, $msg)
-    {
-        $sql = "update `heart_beat` set `ibi` = :ibi where id = :id";
-        $stm = $this->DBH->prepare($sql);
-        $data = [
-            'id'  => $msg->data->beatID,
-            'ibi' => $msg->data->ibi
-        ];
-        $stm->execute($data);
-    }
-
-    /**
      * @param $sender
      * @param $msg
      */
@@ -102,6 +86,7 @@ class echoServer extends WebSocketServer
                     'type' => 'notice'
                 );
                 $this->send($user, json_encode($json));
+                $this->disconnect($user);
             }
         }
     }

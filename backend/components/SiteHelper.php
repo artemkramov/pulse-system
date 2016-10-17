@@ -49,7 +49,7 @@ class SiteHelper extends \yii\base\Component
             if (!self::checkActionPermission($url)) {
                 unset($actions[$key]);
             }
-            $actions[$key] = $action;
+            //$actions[$key] = $action;
         }
         $actions = array_map(function ($item) {
             return "{" . $item . "}";
@@ -125,6 +125,10 @@ class SiteHelper extends \yii\base\Component
     {
         $path = str_replace(\Yii::$app->request->hostInfo, '', $path);
         $parts = array_slice(explode('/', $path), 2);
+        $adminPart = trim(Url::home(), '/');
+        if (!empty($parts) && $parts[0] == $adminPart) {
+            unset($parts[0]);
+        }
         return "/" . implode('/', $parts);
     }
 
