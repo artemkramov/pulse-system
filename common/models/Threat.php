@@ -76,15 +76,23 @@ class Threat extends Bean
         parent::afterSave($insert, $changedAttributes);
     }
 
+    /**
+     * Send notification of the threat to related customer's operators
+     */
     public function sendNotification()
     {
+        $updatedThreat = self::findOne($this->id);
         $operators = $this->customer->operators;
+        $emailViewPath = \Yii::getAlias('@backend/modules/users/views/customers/');
+        \Yii::$app->controller->viewPath = $emailViewPath;
         foreach ($operators as $operator) {
-            Yii::$app->controller->renderPartial(__DIR__ . '/_test.php');
+            $body = Yii::$app->controller->renderPartial('notification', [
+                'threat' => $updatedThreat
+            ]);
             /**
              * @var User $operator
              */
-            $mailer = Mailer::get($operator->email, Module::t('Threat from ') . ' ' . $this->customer->name, 'ssss');
+            $mailer = Mailer::get($operator->email, Module::t('Threat from ') . ' ' . $this->customer->name, $body);
             $mailer->send();
         }
 

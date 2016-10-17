@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Окт 16 2016 г., 18:32
+-- Время создания: Окт 17 2016 г., 08:40
 -- Версия сервера: 10.1.16-MariaDB
 -- Версия PHP: 5.5.38
 
@@ -744,7 +744,7 @@ CREATE TABLE IF NOT EXISTS `heart_beat` (
   `ibi` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=301 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=151 ;
 
 --
 -- Дамп данных таблицы `heart_beat`
@@ -2415,12 +2415,36 @@ INSERT INTO `message` (`id`, `language`, `translation`) VALUES
 (900, 'en', ''),
 (900, 'ru', 'Операторы'),
 (900, 'ua', 'Оператори'),
-(901, 'en', NULL),
-(901, 'ru', NULL),
-(901, 'ua', NULL),
+(901, 'en', ''),
+(901, 'ru', 'Ударов за минуту'),
+(901, 'ua', 'Ударів за хвилину'),
 (902, 'en', ''),
 (902, 'ru', 'Опасный пульс:'),
-(902, 'ua', 'Небезпечний пульс:');
+(902, 'ua', 'Небезпечний пульс:'),
+(903, 'en', ''),
+(903, 'ru', 'Угроза'),
+(903, 'ua', 'Загроза'),
+(904, 'en', ''),
+(904, 'ru', 'Время'),
+(904, 'ua', 'Час'),
+(905, 'en', ''),
+(905, 'ru', 'Тахикардия'),
+(905, 'ua', 'Тахікардія'),
+(906, 'en', NULL),
+(906, 'ru', NULL),
+(906, 'ua', NULL),
+(907, 'en', NULL),
+(907, 'ru', NULL),
+(907, 'ua', NULL),
+(908, 'en', ''),
+(908, 'ru', 'Брадикардия'),
+(908, 'ua', 'Брадікардія'),
+(909, 'en', NULL),
+(909, 'ru', NULL),
+(909, 'ua', NULL),
+(910, 'en', NULL),
+(910, 'ru', NULL),
+(910, 'ua', NULL);
 
 -- --------------------------------------------------------
 
@@ -2603,7 +2627,7 @@ CREATE TABLE IF NOT EXISTS `source_message` (
   `category` varchar(255) DEFAULT NULL,
   `message` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=903 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=911 ;
 
 --
 -- Дамп данных таблицы `source_message`
@@ -3068,7 +3092,11 @@ INSERT INTO `source_message` (`id`, `category`, `message`) VALUES
 (899, 'common/modules/i18n', 'Create role'),
 (900, 'common/modules/i18n', 'Operators'),
 (901, 'common/modules/i18n', 'BPM'),
-(902, 'common/modules/i18n', 'Threat from ');
+(902, 'common/modules/i18n', 'Threat from '),
+(903, 'common/modules/i18n', 'Threat'),
+(904, 'common/modules/i18n', 'Time'),
+(905, 'common/modules/i18n', 'tachycardia'),
+(908, 'common/modules/i18n', 'bradycardia');
 
 -- --------------------------------------------------------
 
@@ -3091,7 +3119,7 @@ CREATE TABLE IF NOT EXISTS `task` (
 --
 
 INSERT INTO `task` (`id`, `name`, `job_id`, `status`, `crontab`) VALUES
-(7, 'Disease detection', 7, 'running', '* * * * *');
+(7, 'Disease detection', 7, 'aborted', '* * * * *');
 
 -- --------------------------------------------------------
 
@@ -3107,7 +3135,7 @@ CREATE TABLE IF NOT EXISTS `threat` (
   `bpm` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
 
 --
 -- Дамп данных таблицы `threat`
@@ -3133,7 +3161,20 @@ INSERT INTO `threat` (`id`, `customer_id`, `created_at`, `alias`, `bpm`) VALUES
 (18, 30, '2016-10-16 16:22:23', 'tachycardia', 100),
 (19, 30, '2016-10-16 16:22:33', 'tachycardia', 100),
 (20, 30, '2016-10-16 16:23:14', 'tachycardia', 100),
-(21, 30, '2016-10-16 16:27:38', 'tachycardia', 100);
+(21, 30, '2016-10-16 16:27:38', 'tachycardia', 100),
+(22, 30, '2016-10-17 06:07:57', 'tachycardia', 100),
+(23, 30, '2016-10-17 06:10:56', 'tachycardia', 100),
+(24, 30, '2016-10-17 06:12:14', 'tachycardia', 100),
+(25, 30, '2016-10-17 06:18:07', 'tachycardia', 100),
+(26, 30, '2016-10-17 06:18:32', 'bradycardia', 50),
+(27, 30, '2016-10-17 06:26:06', 'tachycardia', 100),
+(28, 30, '2016-10-17 06:28:49', 'tachycardia', 100),
+(29, 30, '2016-10-17 06:30:08', 'tachycardia', 100),
+(30, 30, '2016-10-17 06:30:34', 'tachycardia', 100),
+(31, 30, '2016-10-17 06:31:47', 'tachycardia', 100),
+(32, 30, '2016-10-17 06:37:20', 'tachycardia', 100),
+(33, 30, '2016-10-17 06:38:53', 'tachycardia', 100),
+(34, 30, '2016-10-17 06:40:14', 'tachycardia', 100);
 
 -- --------------------------------------------------------
 
