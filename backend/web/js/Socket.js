@@ -106,6 +106,19 @@ var Socket = (function () {
                     Socket.updateBeatPerMinute(response.data.bpm);
                 }
             }
+            if (response.type == 'attention') {
+                var threat = response.data.threat;
+                var parts = threat.link.split('/');
+                parts[1] = lang;
+                parts.splice(2, 0, "admin");
+                threat.link = parts.join('/');
+                var compiled = _.template($("#notification-disease").html());
+                var message = compiled({
+                    threat: threat
+                });
+                Socket.beep();
+                App.pushNotification(message, "alert");
+            }
 
         },
         /**
@@ -123,23 +136,27 @@ var Socket = (function () {
             var self = this;
 
             $(document).ready(function () {
-                self.updateChart();
 
-                /**
-                 * Push zero data to the plot
-                 */
-                setInterval(function () {
-                    if (!isHeartBeat) {
-                        if (intervalCounter > maxResponseInterval) {
-                            self.updateBeatPerMinute('-');
-                        }
-                        else {
-                            intervalCounter += interval;
-                        }
-                        self.pushZeroToChart();
-                    }
+                if ($("#chartContainer").length) {
+                    self.updateChart();
 
-                }, interval);
+                    /**
+                     * Push zero data to the plot
+                     */
+                    setInterval(function () {
+                        if (!isHeartBeat) {
+                            if (intervalCounter > maxResponseInterval) {
+                                self.updateBeatPerMinute('-');
+                            }
+                            else {
+                                intervalCounter += interval;
+                            }
+                            self.pushZeroToChart();
+                        }
+
+                    }, interval);
+                }
+
 
             });
 
@@ -202,6 +219,13 @@ var Socket = (function () {
                 y: 0
             });
         },
+        /**
+         * Make beep sound
+         */
+        beep: function () {
+            var snd = new Audio(backendFileUrl + '/uploads/beep.wav');
+            snd.play();
+        }
     };
 })();
 if (currentUserID)

@@ -269,14 +269,36 @@ var App = (function () {
                 return g[1].toUpperCase();
             });
         },
+        /**
+         * @returns {string}
+         */
         s4: function () {
             return Math.floor((1 + Math.random()) * 0x10000)
                 .toString(16)
                 .substring(1);
         },
+        /**
+         * @returns {string}
+         */
         generateGUID: function () {
             return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
                 this.s4() + '-' + this.s4() + this.s4() + this.s4();
+        },
+        /**
+         * @param message
+         * @param type
+         */
+        pushNotification: function (message, type) {
+            noty({
+                text: message,
+                type: type
+            });
+        },
+        /**
+         * Clear all notifications
+         */
+        clearNotification: function () {
+            $.noty.closeAll();
         }
     }
 })();

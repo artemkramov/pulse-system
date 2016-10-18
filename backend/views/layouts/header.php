@@ -63,8 +63,10 @@ use common\models\User;
     echo $this->render('../includes/alert');
     echo $this->render('../includes/confirm');
     echo $this->render('../includes/print-plot');
+    echo $this->render('../includes/notification-disease');
     ?>
 </div>
+<div id="sound"></div>
 <div>
     <? $javascriptLabels = \common\models\Lang::getJavascriptLabels();?>
 </div>
@@ -79,4 +81,5 @@ use common\models\User;
     var frontendDirectoryAsset = '<?= $frontendDirectoryAsset ?>';
     var currentUserID = '<?= !Yii::$app->user->isGuest ? Yii::$app->user->id : '' ?>';
     var backendUrl = '<?= \Yii::$app->request->hostInfo . "/" . \common\models\Lang::getCurrent()->url . \yii\helpers\Url::home()?>';
+    var backendFileUrl = '<?= \Yii::$app->request->hostInfo . \yii\helpers\Url::home()?>';
 </script>

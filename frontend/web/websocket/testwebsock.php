@@ -92,6 +92,25 @@ class echoServer extends WebSocketServer
     }
 
     /**
+     * @param $sender
+     * @param $msg
+     */
+    public function pushAttention($sender, $msg)
+    {
+        foreach ($this->users as $user) {
+            if ($user->row_id == $msg->data->userID) {
+                unset($msg->data->userID);
+                $json = array(
+                    'data' => $msg->data,
+                    'type' => 'attention'
+                );
+                $this->send($user, json_encode($json));
+                $this->disconnect($user);
+            }
+        }
+    }
+
+    /**
      * @param $user
      */
     protected function connected($user)

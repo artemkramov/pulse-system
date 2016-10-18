@@ -313,3 +313,12 @@ li.error {
 #chart-container {
     margin: 10px 0px;
 }
+.table-notification-disease {
+    text-align: left;
+}
+.table-notification-disease td {
+    font-weight: 100;
+}
+.notification-more-details {
+    text-align: left;
+}

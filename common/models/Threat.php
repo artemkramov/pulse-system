@@ -3,8 +3,10 @@
 namespace common\models;
 
 use common\components\Mailer;
+use common\components\WebsocketClient;
 use common\modules\i18n\Module;
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "threat".
@@ -94,19 +96,34 @@ class Threat extends Bean
      */
     public function sendNotification()
     {
+        $urlWs = 'ws://' . \Yii::$app->params['serverHost'] . ':9000/echobot';
+        $wsClient = new WebsocketClient($urlWs);
         $updatedThreat = self::findOne($this->id);
         $operators = $this->customer->operators;
         $emailViewPath = \Yii::getAlias('@backend/modules/users/views/customers/');
         \Yii::$app->controller->viewPath = $emailViewPath;
         foreach ($operators as $operator) {
-            $body = Yii::$app->controller->renderPartial('notification', [
-                'threat' => $updatedThreat
+            $data = json_encode([
+                'method' => 'pushAttention',
+                'data'   => [
+                    'userID' => $operator->id,
+                    'threat' => [
+                        'id'       => $this->id,
+                        'name'     => Module::t($this->alias),
+                        'customer' => $this->customer->name,
+                        'link'     => Url::to(['/users/threats/view', 'id' => $this->id])
+                    ],
+                ]
             ]);
-            /**
-             * @var User $operator
-             */
-            $mailer = Mailer::get($operator->email, Module::t('Threat from ') . ' ' . $this->customer->name, $body);
-            $mailer->send();
+            $wsClient->send($data);
+//            $body = Yii::$app->controller->renderPartial('notification', [
+//                'threat' => $updatedThreat
+//            ]);
+//            /**
+//             * @var User $operator
+//             */
+//            $mailer = Mailer::get($operator->email, Module::t('Threat from ') . ' ' . $this->customer->name, $body);
+//            $mailer->send();
         }
 
     }

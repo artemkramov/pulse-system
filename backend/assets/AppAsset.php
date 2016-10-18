@@ -36,6 +36,7 @@ class AppAsset extends AssetBundle
         'http://vjs.zencdn.net/5.10.8/video.js',
         'js/canvasjs.min.js',
         'js/underscore-min.js',
+        'js/jquery.noty.packaged.min.js',
         'js/date.js',
         'js/App.js',
         'js/Template.js',
@@ -46,6 +47,7 @@ class AppAsset extends AssetBundle
         'js/chosen/chosen.jquery.min.js',
         '//cdn.tinymce.com/4/tinymce.min.js',
         'js/filemanager.min.js',
+        'js/Socket.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
