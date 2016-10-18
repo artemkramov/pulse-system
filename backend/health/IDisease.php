@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\health;
+use common\modules\i18n\Module;
 
 /**
  * Interface IDisease
@@ -46,6 +47,30 @@ abstract class IDisease
     public function getBPM($pulseData)
     {
         return round(count($pulseData) / self::INPUT_MINUTES);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getDiseaseList()
+    {
+        return [new Tachycardia(), new Bradycardia()];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getDiseaseDropdown()
+    {
+        $response = ['' => ''];
+        $diseases = self::getDiseaseList();
+        foreach ($diseases as $disease) {
+            /**
+             * @var IDisease $disease
+             */
+            $response[$disease->getAlias()] = Module::t($disease->getAlias());
+        }
+        return $response;
     }
 
 }

@@ -299,6 +299,7 @@ class SiteHelper extends \yii\base\Component
              'items' => [
                  ['label' => Module::t('Users'), 'icon' => 'fa fa-user', 'url' => ['/users/users/index']],
                  ['label' => Module::t('Customers'), 'icon' => 'fa fa-user-md', 'url' => ['/users/customers/index']],
+                 ['label' => Module::t('Threats'), 'icon' => 'fa fa-medkit', 'url' => ['/users/threats/index']],
              ]
             ],
             ['label' => Module::t('Content'), 'icon' => 'fa fa-navicon', 'url' => '#',

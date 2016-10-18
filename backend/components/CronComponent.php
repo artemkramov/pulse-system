@@ -20,7 +20,7 @@ class CronComponent
     public function crDetectDisease()
     {
         $customers = Customer::find()->all();
-        $diseases = [new Tachycardia(), new Bradycardia()];
+        $diseases = IDisease::getDiseaseList();
         foreach ($customers as $customer) {
             /**
              * @var Customer $customer

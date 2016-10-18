@@ -6,17 +6,20 @@ use \backend\components\SiteHelper;
 use \backend\components\AccessHelper;
 
 /** @var $model \common\models\Bean */
+/**
+ * @var array $excludeViews
+ */
 ?>
 <p>
     <?
-    if (SiteHelper::checkActionPermission(['update'])) {
+    if (SiteHelper::checkActionPermission(['update']) && !in_array('update', $excludeViews)) {
         echo Html::a(Module::t('Update'),
             \yii\helpers\Url::to([AccessHelper::formPrimaryUrl('update'), 'id' => $model->id]),
             ['class' => 'btn btn-primary']);
     }
     ?>
     <?
-    if (SiteHelper::checkActionPermission(['delete'])) {
+    if (SiteHelper::checkActionPermission(['delete']) && !in_array('delete', $excludeViews)) {
         echo Html::a(Module::t('Delete'),
             \yii\helpers\Url::to([AccessHelper::formPrimaryUrl('delete'), 'id' => $model->id]), [
             'class' => 'btn btn-danger',
@@ -28,7 +31,7 @@ use \backend\components\AccessHelper;
     }
     ?>
     <?
-    if (SiteHelper::checkActionPermission(['index'])) {
+    if (SiteHelper::checkActionPermission(['index']) && !in_array('index', $excludeViews)) {
         echo Html::a(Module::t('Back to list'), AccessHelper::formPrimaryUrl('index'), ['class' => 'btn btn-default']);
     }
     ?>

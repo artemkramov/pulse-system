@@ -57,6 +57,19 @@ class Threat extends Bean
     }
 
     /**
+     * Method for getting the name of the bean
+     * Is called for breadcrumb generation
+     * @return array
+     */
+    public static function getLabels()
+    {
+        return [
+            'singular' => 'Threat',
+            'multiple' => 'Threats'
+        ];
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getCustomer()
