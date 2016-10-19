@@ -2,6 +2,9 @@
 
 namespace common\models\Search;
 
+use backend\components\AccessHelper;
+use common\models\Customer;
+use common\models\User;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -64,11 +67,19 @@ class ThreatSearch extends Threat
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id'          => $this->id,
-            'customer_id' => $this->customer_id,
-            'created_at'  => $this->created_at,
-            'bpm'         => $this->bpm,
+            'id'                               => $this->id,
+            self::tableName() . '.customer_id' => $this->customer_id,
+            'created_at'                       => $this->created_at,
+            'bpm'                              => $this->bpm,
         ]);
+
+        if (!User::isAdmin()) {
+            $accessHelper = new AccessHelper();
+            $customers = $accessHelper->getFilter();
+            $query->andWhere([
+                'in', self::tableName() . '.customer_id', $customers
+            ]);
+        }
 
         $query->andFilterWhere(['like', 'alias', $this->alias]);
 

@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\components\AccessHelper;
 use backend\components\ManyToManyBehavior;
 use backend\health\IDisease;
 use common\modules\i18n\Module;
@@ -271,5 +272,24 @@ class Customer extends Bean
                 ->one();
         }
         return $data;
+    }
+
+    /**
+     * @param string $keyField
+     * @param string $valueField
+     * @param bool $asArray
+     * @return array
+     */
+    public static function listAll($keyField = 'id', $valueField = 'name', $asArray = true)
+    {
+        $accessHelper = new AccessHelper();
+        $customerIds = $accessHelper->getFilter();
+        $query = static::find()->where([
+            'in', 'id', $customerIds
+        ]);
+        if ($asArray) {
+            $query->select([$keyField, $valueField])->asArray();
+        }
+        return ArrayHelper::map($query->all(), $keyField, $valueField);
     }
 }

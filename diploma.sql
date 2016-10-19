@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Окт 18 2016 г., 08:57
+-- Время создания: Окт 19 2016 г., 12:25
 -- Версия сервера: 10.1.16-MariaDB
 -- Версия PHP: 5.5.38
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   PRIMARY KEY (`id`),
   KEY `country_id` (`country_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Дамп данных таблицы `address`
@@ -73,7 +73,8 @@ CREATE TABLE IF NOT EXISTS `address` (
 
 INSERT INTO `address` (`id`, `phone`, `country_id`, `city`, `region`, `street`, `building`, `flat`, `zip`, `user_id`) VALUES
 (4, '0501493132', 1, 'Poltava', 'Myrgorod', 'lenina', '34234', '', '344234', 47),
-(5, 'fghgfh', 1, 'vchcvhch', 'fghfgh', 'fghfgh', 'fh', 'fgh', 'fgh', 48);
+(5, 'fghgfh', 1, 'vchcvhch', 'fghfgh', 'fghfgh', 'fh', 'fgh', 'fgh', 48),
+(6, '0501493213', 1, 'Torino', 'Kyivskas', 'JKJ', '23', '', '23900', 49);
 
 -- --------------------------------------------------------
 
@@ -122,7 +123,9 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('employee', '29', 1458058257),
 ('employee', '7', 1457030690),
 ('employee', '9', 1457030749),
-('operator', '30', 1476628974);
+('operator', '30', 1476628974),
+('operator', '31', 1476870284),
+('operator', '38', 1476870523);
 
 -- --------------------------------------------------------
 
@@ -154,7 +157,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('content/posts', 2, 'Posts management', NULL, NULL, 1469903256, 1469903256, 'content'),
 ('dashboard/default/index', 2, 'Dashboard', NULL, NULL, 1468306058, 1468306516, ''),
 ('i18n', 2, 'Translation management', NULL, NULL, 1464245784, 1464245784, NULL),
-('operator', 1, 'Operator', NULL, NULL, 1476628916, 1476693426, NULL),
+('operator', 1, 'Operator', NULL, NULL, 1476628916, 1476789708, NULL),
 ('permit/access', 2, 'Role and permission management', NULL, NULL, 1457031451, 1457031915, NULL),
 ('products', 2, 'Shop management', NULL, NULL, 1470493916, 1470493916, ''),
 ('products/categories', 2, 'Category management', NULL, NULL, 1470493949, 1470493949, 'products'),
@@ -185,6 +188,8 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('users/customers/index', 2, 'Client heart beat index', NULL, NULL, 1476629074, 1476629074, 'users'),
 ('users/customers/validate-heart-beat-range', 2, 'Client heart beat range validate', NULL, NULL, 1476693413, 1476693413, 'users'),
 ('users/customers/view', 2, 'Client heart beat view', 'isAuthorManyToMany', NULL, 1476690988, 1476690988, 'users'),
+('users/threats/index', 2, 'Threats index', NULL, NULL, 1476789650, 1476789650, 'users'),
+('users/threats/view', 2, 'Threats view', NULL, NULL, 1476789696, 1476789696, 'users'),
 ('users/users/change-password', 2, 'Change password', NULL, NULL, 1457105560, 1467648581, 'users'),
 ('users/users/update', 2, 'Update own profile', NULL, NULL, 1464271347, 1467648597, 'users');
 
@@ -239,6 +244,8 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('operator', 'users/customers/index'),
 ('operator', 'users/customers/validate-heart-beat-range'),
 ('operator', 'users/customers/view'),
+('operator', 'users/threats/index'),
+('operator', 'users/threats/view'),
 ('sales_organization', 'customers/customers/index'),
 ('sales_organization', 'users/users/change-password');
 
@@ -597,7 +604,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `age` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
 
 --
 -- Дамп данных таблицы `customer`
@@ -605,7 +612,8 @@ CREATE TABLE IF NOT EXISTS `customer` (
 
 INSERT INTO `customer` (`id`, `user_id`, `mac_address`, `name`, `notes`, `date_registrated`, `gender_id`, `age`) VALUES
 (30, 47, '74:69:69:2d:30:31', 'Летенко Гаврило', '', '2016-09-23', 1, 23),
-(31, 48, 'dfsdfs', 'Test', '', '2016-10-14', 1, 34);
+(31, 48, 'dfsdfs', 'Test', '', '2016-10-14', 1, 34),
+(32, 49, '34:45:fs:34:45:24:df', 'Junior Buffon', '', '2016-10-19', 1, 26);
 
 -- --------------------------------------------------------
 
@@ -620,14 +628,16 @@ CREATE TABLE IF NOT EXISTS `customer_operator` (
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`),
   KEY `operator_id` (`operator_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Дамп данных таблицы `customer_operator`
 --
 
 INSERT INTO `customer_operator` (`id`, `customer_id`, `operator_id`) VALUES
-(2, 30, 30);
+(2, 30, 30),
+(3, 31, 31),
+(4, 32, 30);
 
 -- --------------------------------------------------------
 
@@ -754,7 +764,7 @@ CREATE TABLE IF NOT EXISTS `heart_beat` (
   `ibi` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=606 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=708 ;
 
 --
 -- Дамп данных таблицы `heart_beat`
@@ -1365,7 +1375,109 @@ INSERT INTO `heart_beat` (`id`, `user_id`, `ibi`) VALUES
 (602, 47, '2016-10-17 08:52:38.779014'),
 (603, 47, '2016-10-17 08:52:40.712391'),
 (604, 47, '2016-10-17 08:52:42.754838'),
-(605, 47, '2016-10-17 08:52:44.725238');
+(605, 47, '2016-10-17 08:52:44.725238'),
+(606, 47, '2016-10-18 10:02:52.795694'),
+(607, 47, '2016-10-18 10:02:53.373981'),
+(608, 47, '2016-10-18 10:02:54.013906'),
+(609, 47, '2016-10-18 10:02:54.556677'),
+(610, 47, '2016-10-18 10:02:55.102488'),
+(611, 47, '2016-10-18 10:02:55.638052'),
+(612, 47, '2016-10-18 10:02:56.237959'),
+(613, 47, '2016-10-18 10:02:56.802496'),
+(614, 47, '2016-10-18 10:02:57.362495'),
+(615, 47, '2016-10-18 10:02:57.943723'),
+(616, 47, '2016-10-18 10:02:58.530941'),
+(617, 47, '2016-10-18 10:02:59.107750'),
+(618, 47, '2016-10-18 10:02:59.706516'),
+(619, 47, '2016-10-18 10:03:00.376178'),
+(620, 47, '2016-10-18 10:03:00.964961'),
+(621, 47, '2016-10-18 10:03:01.552362'),
+(622, 47, '2016-10-18 10:03:02.110245'),
+(623, 47, '2016-10-19 10:08:47.326144'),
+(624, 47, '2016-10-19 10:08:47.930584'),
+(625, 47, '2016-10-19 10:08:48.546220'),
+(626, 47, '2016-10-19 10:08:49.148267'),
+(627, 47, '2016-10-19 10:08:49.695686'),
+(628, 47, '2016-10-19 10:08:50.296365'),
+(629, 47, '2016-10-19 10:08:50.906672'),
+(630, 47, '2016-10-19 10:08:51.506947'),
+(631, 47, '2016-10-19 10:08:52.110613'),
+(632, 47, '2016-10-19 10:08:52.668127'),
+(633, 47, '2016-10-19 10:08:53.264660'),
+(634, 47, '2016-10-19 10:08:53.819887'),
+(635, 47, '2016-10-19 10:08:54.419787'),
+(636, 47, '2016-10-19 10:08:55.032880'),
+(637, 47, '2016-10-19 10:08:55.629110'),
+(638, 47, '2016-10-19 10:08:56.244108'),
+(639, 47, '2016-10-19 10:08:56.853086'),
+(640, 47, '2016-10-19 10:09:07.128593'),
+(641, 47, '2016-10-19 10:09:07.762043'),
+(642, 47, '2016-10-19 10:09:08.316436'),
+(643, 47, '2016-10-19 10:09:08.861822'),
+(644, 47, '2016-10-19 10:09:09.448238'),
+(645, 47, '2016-10-19 10:09:09.995626'),
+(646, 47, '2016-10-19 10:09:10.583045'),
+(647, 47, '2016-10-19 10:09:11.193477'),
+(648, 47, '2016-10-19 10:09:11.789922'),
+(649, 47, '2016-10-19 10:09:12.374315'),
+(650, 47, '2016-10-19 10:09:12.912699'),
+(651, 47, '2016-10-19 10:09:13.502136'),
+(652, 47, '2016-10-19 10:09:14.118564'),
+(653, 47, '2016-10-19 10:09:14.709991'),
+(654, 47, '2016-10-19 10:09:15.297410'),
+(655, 47, '2016-10-19 10:09:15.886008'),
+(656, 47, '2016-10-19 10:09:16.484432'),
+(657, 47, '2016-10-19 10:09:17.035823'),
+(658, 47, '2016-10-19 10:20:01.649675'),
+(659, 47, '2016-10-19 10:20:02.237089'),
+(660, 47, '2016-10-19 10:20:02.828508'),
+(661, 47, '2016-10-19 10:20:03.371893'),
+(662, 47, '2016-10-19 10:20:03.963315'),
+(663, 47, '2016-10-19 10:20:04.518709'),
+(664, 47, '2016-10-19 10:20:05.106126'),
+(665, 47, '2016-10-19 10:20:05.696542'),
+(666, 47, '2016-10-19 10:20:06.282959'),
+(667, 47, '2016-10-19 10:20:06.870376'),
+(668, 47, '2016-10-19 10:20:07.412761'),
+(669, 47, '2016-10-19 10:20:08.022195'),
+(670, 47, '2016-10-19 10:20:08.630625'),
+(671, 47, '2016-10-19 10:20:09.206037'),
+(672, 47, '2016-10-19 10:20:09.769435'),
+(673, 47, '2016-10-19 10:20:10.322845'),
+(674, 47, '2016-10-19 10:20:10.879233'),
+(675, 47, '2016-10-19 10:20:11.420604'),
+(676, 47, '2016-10-19 10:20:15.420442'),
+(677, 47, '2016-10-19 10:20:16.008859'),
+(678, 47, '2016-10-19 10:20:16.591274'),
+(679, 47, '2016-10-19 10:20:17.181208'),
+(680, 47, '2016-10-19 10:20:17.766623'),
+(681, 47, '2016-10-19 10:20:18.308020'),
+(682, 47, '2016-10-19 10:20:18.891421'),
+(683, 47, '2016-10-19 10:20:19.569905'),
+(684, 47, '2016-10-19 10:20:20.158323'),
+(685, 47, '2016-10-19 10:20:20.743737'),
+(686, 47, '2016-10-19 10:20:21.284129'),
+(687, 47, '2016-10-19 10:20:22.060669'),
+(688, 47, '2016-10-19 10:20:22.970315'),
+(689, 47, '2016-10-19 10:20:23.744866'),
+(690, 47, '2016-10-19 10:20:24.559442'),
+(691, 47, '2016-10-19 10:20:26.847068'),
+(692, 47, '2016-10-19 10:20:27.424475'),
+(693, 47, '2016-10-19 10:20:28.061927'),
+(694, 47, '2016-10-19 10:20:28.650347'),
+(695, 47, '2016-10-19 10:20:29.200737'),
+(696, 47, '2016-10-19 10:20:29.790156'),
+(697, 47, '2016-10-19 10:20:30.618743'),
+(698, 47, '2016-10-19 10:20:31.206158'),
+(699, 47, '2016-10-19 10:20:31.765556'),
+(700, 47, '2016-10-19 10:20:32.358981'),
+(701, 47, '2016-10-19 10:20:32.911368'),
+(702, 47, '2016-10-19 10:20:33.476771'),
+(703, 47, '2016-10-19 10:20:34.084202'),
+(704, 47, '2016-10-19 10:20:34.635594'),
+(705, 47, '2016-10-19 10:20:35.248026'),
+(706, 47, '2016-10-19 10:20:35.867466'),
+(707, 47, '2016-10-19 10:20:36.430885');
 
 -- --------------------------------------------------------
 
@@ -2907,9 +3019,9 @@ INSERT INTO `message` (`id`, `language`, `translation`) VALUES
 (909, 'en', ''),
 (909, 'ru', 'Угрозы'),
 (909, 'ua', 'Загрози'),
-(910, 'en', NULL),
-(910, 'ru', NULL),
-(910, 'ua', NULL);
+(910, 'en', ''),
+(910, 'ru', 'Детали'),
+(910, 'ua', 'Деталі');
 
 -- --------------------------------------------------------
 
@@ -3092,7 +3204,7 @@ CREATE TABLE IF NOT EXISTS `source_message` (
   `category` varchar(255) DEFAULT NULL,
   `message` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=910 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=911 ;
 
 --
 -- Дамп данных таблицы `source_message`
@@ -3562,7 +3674,8 @@ INSERT INTO `source_message` (`id`, `category`, `message`) VALUES
 (904, 'common/modules/i18n', 'Time'),
 (905, 'common/modules/i18n', 'tachycardia'),
 (908, 'common/modules/i18n', 'bradycardia'),
-(909, 'common/modules/i18n', 'Threats');
+(909, 'common/modules/i18n', 'Threats'),
+(910, 'common/modules/i18n', 'Details');
 
 -- --------------------------------------------------------
 
@@ -3601,7 +3714,7 @@ CREATE TABLE IF NOT EXISTS `threat` (
   `bpm` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=105 ;
 
 --
 -- Дамп данных таблицы `threat`
@@ -3639,7 +3752,77 @@ INSERT INTO `threat` (`id`, `customer_id`, `created_at`, `alias`, `bpm`) VALUES
 (31, 30, '2016-10-17 06:31:47', 'tachycardia', 100),
 (32, 30, '2016-10-17 06:37:20', 'tachycardia', 100),
 (33, 30, '2016-10-17 06:38:53', 'tachycardia', 100),
-(34, 30, '2016-10-17 06:40:14', 'tachycardia', 100);
+(34, 30, '2016-10-17 06:40:14', 'tachycardia', 100),
+(35, 30, '2016-10-18 09:53:12', 'tachycardia', 100),
+(36, 30, '2016-10-18 10:05:14', 'tachycardia', 100),
+(37, 30, '2016-10-18 10:06:14', 'tachycardia', 100),
+(38, 30, '2016-10-18 10:07:23', 'tachycardia', 100),
+(39, 30, '2016-10-18 10:08:06', 'tachycardia', 100),
+(40, 30, '2016-10-18 10:10:26', 'tachycardia', 100),
+(41, 30, '2016-10-18 10:13:26', 'tachycardia', 100),
+(42, 31, '2016-10-18 10:13:26', 'tachycardia', 100),
+(43, 30, '2016-10-18 10:14:49', 'tachycardia', 100),
+(44, 31, '2016-10-18 10:14:49', 'tachycardia', 100),
+(45, 30, '2016-10-18 10:15:36', 'tachycardia', 100),
+(46, 31, '2016-10-18 10:15:36', 'tachycardia', 100),
+(47, 30, '2016-10-18 10:24:41', 'tachycardia', 100),
+(48, 31, '2016-10-18 10:24:41', 'tachycardia', 100),
+(49, 30, '2016-10-18 10:35:04', 'tachycardia', 100),
+(50, 31, '2016-10-18 10:35:04', 'tachycardia', 100),
+(51, 30, '2016-10-18 10:36:15', 'tachycardia', 100),
+(52, 31, '2016-10-18 10:36:15', 'tachycardia', 100),
+(53, 30, '2016-10-18 10:36:53', 'tachycardia', 100),
+(54, 31, '2016-10-18 10:36:53', 'tachycardia', 100),
+(55, 30, '2016-10-18 10:40:16', 'tachycardia', 100),
+(56, 31, '2016-10-18 10:40:16', 'tachycardia', 100),
+(57, 30, '2016-10-18 10:41:10', 'tachycardia', 100),
+(58, 31, '2016-10-18 10:41:10', 'tachycardia', 100),
+(59, 30, '2016-10-18 10:43:22', 'tachycardia', 100),
+(60, 31, '2016-10-18 10:43:22', 'tachycardia', 100),
+(61, 30, '2016-10-18 10:45:30', 'tachycardia', 100),
+(62, 31, '2016-10-18 10:45:30', 'tachycardia', 100),
+(63, 30, '2016-10-18 10:45:54', 'tachycardia', 100),
+(64, 31, '2016-10-18 10:45:54', 'tachycardia', 100),
+(65, 30, '2016-10-18 10:47:01', 'tachycardia', 100),
+(66, 31, '2016-10-18 10:47:01', 'tachycardia', 100),
+(67, 30, '2016-10-18 10:49:18', 'tachycardia', 100),
+(68, 31, '2016-10-18 10:49:19', 'tachycardia', 100),
+(69, 30, '2016-10-18 10:51:32', 'tachycardia', 100),
+(70, 31, '2016-10-18 10:51:32', 'tachycardia', 100),
+(71, 30, '2016-10-18 10:53:28', 'tachycardia', 100),
+(72, 31, '2016-10-18 10:53:28', 'tachycardia', 100),
+(73, 30, '2016-10-18 10:54:56', 'tachycardia', 100),
+(74, 31, '2016-10-18 10:54:56', 'tachycardia', 100),
+(75, 30, '2016-10-18 10:56:29', 'tachycardia', 100),
+(76, 31, '2016-10-18 10:56:29', 'tachycardia', 100),
+(77, 30, '2016-10-18 10:57:29', 'tachycardia', 100),
+(78, 31, '2016-10-18 10:57:29', 'tachycardia', 100),
+(79, 30, '2016-10-18 11:07:55', 'tachycardia', 100),
+(80, 31, '2016-10-18 11:07:55', 'tachycardia', 100),
+(81, 30, '2016-10-18 11:17:26', 'tachycardia', 100),
+(82, 31, '2016-10-18 11:17:26', 'tachycardia', 100),
+(83, 30, '2016-10-18 11:17:42', 'tachycardia', 100),
+(84, 31, '2016-10-18 11:17:42', 'tachycardia', 100),
+(85, 30, '2016-10-18 11:17:51', 'tachycardia', 100),
+(86, 31, '2016-10-18 11:17:51', 'tachycardia', 100),
+(87, 30, '2016-10-19 10:12:47', 'tachycardia', 100),
+(88, 31, '2016-10-19 10:12:47', 'tachycardia', 100),
+(89, 32, '2016-10-19 10:12:48', 'tachycardia', 100),
+(90, 30, '2016-10-19 10:13:01', 'tachycardia', 100),
+(91, 31, '2016-10-19 10:13:01', 'tachycardia', 100),
+(92, 32, '2016-10-19 10:13:01', 'tachycardia', 100),
+(93, 30, '2016-10-19 10:13:26', 'tachycardia', 100),
+(94, 31, '2016-10-19 10:13:26', 'tachycardia', 100),
+(95, 32, '2016-10-19 10:13:26', 'tachycardia', 100),
+(96, 30, '2016-10-19 10:23:05', 'tachycardia', 100),
+(97, 31, '2016-10-19 10:23:11', 'tachycardia', 100),
+(98, 32, '2016-10-19 10:23:12', 'tachycardia', 100),
+(99, 30, '2016-10-19 10:24:03', 'tachycardia', 100),
+(100, 31, '2016-10-19 10:24:03', 'tachycardia', 100),
+(101, 32, '2016-10-19 10:24:03', 'tachycardia', 100),
+(102, 30, '2016-10-19 10:24:16', 'tachycardia', 100),
+(103, 31, '2016-10-19 10:24:16', 'tachycardia', 100),
+(104, 32, '2016-10-19 10:24:16', 'tachycardia', 100);
 
 -- --------------------------------------------------------
 
@@ -3663,7 +3846,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `password_reset_token` (`password_reset_token`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=50 ;
 
 --
 -- Дамп данных таблицы `user`
@@ -3672,12 +3855,13 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`id`, `username`, `auth_key`, `password_hash`, `password_reset_token`, `email`, `status`, `created_at`, `updated_at`, `logo`, `subscription`) VALUES
 (1, 'admin', 'V-Cym0VAr8UvLBmmLSHJID6XlMaqaXyZ', '$2y$13$wx3ceUtuQVUiwXhZUn9N2.ClZq2jF/JymqR4JZZLHI0abmLtmGly.', NULL, 'artemkramov@yahoo.com', 10, 1455877362, 1474639838, NULL, 1),
 (30, 'akramov', '', '$2y$13$8AfAtunPCVr1gltkcd0yrOKbgJXmqvLIbZScK1Vy0hZGYbyrvobpW', 'flepYLC6C_tO4m9Eeh1R_K3GH3bJ32DQ_1472047294', 'artemkramov@gmail.com', 10, 1464245955, 1476628974, '', 1),
-(31, 'user', 'NEvVqyxhS_uYXwAFuXXEAxwEs8boy0-4', '$2y$13$TEVTC01MWd8/9OZjxY7TMOBvqxp9NmDyuHc/D/IYeEKnwm7aQw0T2', '25lmAAEaVH8j6B-Wk07bBgH5tRjUT-T5_1472042259', 'chutovo_kram@i.ua', 10, 1471539355, 1472042260, NULL, 0),
-(38, 'user1', 'e0GXfN5sXA5mRFBQUssX47SDZucqD4vp', '$2y$13$xa/.96vHpSlPTTbMaP3ntehOyBA4uAChKQPzfC9KYyytEofFkW522', NULL, 'chutovo_kramq@i.ua', 10, 1471590998, 1471605097, NULL, 0),
+(31, 'user', 'NEvVqyxhS_uYXwAFuXXEAxwEs8boy0-4', '$2y$13$TEVTC01MWd8/9OZjxY7TMOBvqxp9NmDyuHc/D/IYeEKnwm7aQw0T2', '25lmAAEaVH8j6B-Wk07bBgH5tRjUT-T5_1472042259', 'chutovo_kram@i.ua', 10, 1471539355, 1476870284, NULL, 0),
+(38, 'user1', 'e0GXfN5sXA5mRFBQUssX47SDZucqD4vp', '$2y$13$xa/.96vHpSlPTTbMaP3ntehOyBA4uAChKQPzfC9KYyytEofFkW522', NULL, 'chutovo_kramq@i.ua', 10, 1471590998, 1476870522, NULL, 0),
 (39, 'gfg@gh.gf', '58sW7ySfGaEikzl8Le4R0dB9i9PmNHC1', '$2y$13$b6ns5jL2oKKhHgaPbahfsORaceIiD7zwTFZkTd/INXNswvC17J8su', NULL, 'fgh@fg.fd', 10, 1472822939, 1472822939, NULL, 1),
 (40, 'test_user', 'd6QnNLurwg3vObzqGEEKCVfcEqO6eviU', '$2y$13$KwBpyIv9.nnqNEve23/0Tu9UvQdD/e0CC5ZuQ.j8pXYPm0w48tUWa', NULL, 'test_user@fd.rt', 10, 1473606411, 1473606411, NULL, 1),
 (47, 'letitbe', '', '$2y$13$Pn3ZLTrrUSUwHN4qSFzlbO5FXizVi6oa6P.ZdFJ3ohwvRHPXGzqE.', NULL, 'letitbe@mail.com', 10, 1474648113, 1474648113, NULL, 1),
-(48, 'test', '', '$2y$13$Ap7/qIP5tHWpE9jBUrJtcO8eYXQeTzuPq5iR8kgVQtdhzKEzTNcFS', NULL, 'test@art.tu', 10, 1476689239, 1476689239, NULL, 1);
+(48, 'test', '', '$2y$13$Ap7/qIP5tHWpE9jBUrJtcO8eYXQeTzuPq5iR8kgVQtdhzKEzTNcFS', NULL, 'test@art.tu', 10, 1476689239, 1476689239, NULL, 1),
+(49, 'junior', '', '$2y$13$9PtsJuO7T.NwBmo3BmBOzeC.HFlggpo05hEk8skw2xkGTcvyZ9Eqe', NULL, 'junior@gmal.com', 10, 1476871311, 1476871311, NULL, 1);
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

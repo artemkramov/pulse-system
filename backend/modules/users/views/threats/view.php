@@ -26,9 +26,11 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge(\common\models\Thre
         'model'      => $model,
         'attributes' => [
             'id',
-            'customer_id',
+            [
+                'attribute' => 'customer_id',
+                'value'     => $model->customer->name
+            ],
             'created_at',
-            'alias',
             'bpm',
         ],
     ]) ?>
