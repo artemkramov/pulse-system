@@ -3,7 +3,7 @@
 
 define('BASEPATH', 1);
 require_once 'websockets.php';
-$db = require_once '../../../common/config/main-local.php';
+$db = require_once(__DIR__.'/../../../common/config/main-local.php');
 
 /**
  * Class echoServer

@@ -20,6 +20,8 @@ use yii\helpers\ArrayHelper;
  * @property string $date_registrated
  * @property integer $gender_id
  * @property integer $age
+ * @property integer $min_beat
+ * @property integer $max_beat
  *
  * @property User $user
  * @property Gender $gender
@@ -84,8 +86,8 @@ class Customer extends Bean
     public function rules()
     {
         return [
-            [['user_id', 'gender_id'], 'integer'],
-            [['mac_address', 'name', 'date_registrated', 'age'], 'required'],
+            [['user_id', 'gender_id', 'min_beat', 'max_beat'], 'integer'],
+            [['mac_address', 'name', 'date_registrated', 'age', 'min_beat', 'max_beat'], 'required'],
             [['notes'], 'string'],
             [['date_registrated'], 'safe'],
             [['mac_address', 'name'], 'string', 'max' => 255],
@@ -107,7 +109,9 @@ class Customer extends Bean
             'notes'            => Module::t('Notes'),
             'date_registrated' => Module::t('Dateregistrated'),
             'gender_id'        => Module::t('Gender'),
-            'age'              => Module::t('Age')
+            'age'              => Module::t('Age'),
+            'min_beat'         => Module::t('Min beat'),
+            'max_beat'         => Module::t('Max beat')
         ];
     }
 
@@ -258,19 +262,22 @@ class Customer extends Bean
      */
     public function getBoundaryConditions()
     {
-        $data = HeartBeatRate::find()
-            ->where([
-                '<', 'min_age', $this->age
-            ])
-            ->andWhere([
-                '>=', 'max_age', $this->age
-            ])
-            ->one();
-        if (empty($data)) {
-            $data = HeartBeatRate::find()
-                ->orderBy(['max_age' => SORT_DESC])
-                ->one();
-        }
+        $data = new HeartBeatRate();
+        $data->min_beat = $this->min_beat;
+        $data->max_beat = $this->max_beat;
+//        $data = HeartBeatRate::find()
+//            ->where([
+//                '<', 'min_age', $this->age
+//            ])
+//            ->andWhere([
+//                '>=', 'max_age', $this->age
+//            ])
+//            ->one();
+//        if (empty($data)) {
+//            $data = HeartBeatRate::find()
+//                ->orderBy(['max_age' => SORT_DESC])
+//                ->one();
+//        }
         return $data;
     }
 

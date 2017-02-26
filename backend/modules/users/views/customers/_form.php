@@ -67,6 +67,15 @@ if (!isset($address)) {
 
     <div class="row">
         <div class="col-sm-6">
+            <?= $form->field($model, 'min_beat')->textInput() ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'max_beat')->textInput() ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
             <?= $form->field($user, 'username')->textInput()->label(Module::t('Username')) ?>
         </div>
         <div class="col-sm-6">

@@ -26,8 +26,9 @@ class CronComponent
              * @var Customer $customer
              */
             $pulseData = $customer->getPulseDataForDisease();
-            $pulseData = $customer->testGetPulseDataForTachycardia();
-            //$pulseData = $customer->testGetPulseDataForBradycardia();
+            if ($customer->id == 30)
+                //$pulseData = $customer->testGetPulseDataForTachycardia();
+                $pulseData = $customer->testGetPulseDataForBradycardia();
             if (empty($pulseData)) {
                 continue;
             }
