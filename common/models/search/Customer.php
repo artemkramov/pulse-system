@@ -3,6 +3,7 @@
 namespace common\models\search;
 
 use backend\components\AccessHelper;
+use common\models\HeartBeat;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -19,7 +20,7 @@ class Customer extends CustomerModel
     public function rules()
     {
         return [
-            [['id', 'user_id'], 'integer'],
+            [['id', 'user_id', 'isOnlineFlag'], 'integer'],
             [['mac_address', 'name', 'notes', 'date_registrated'], 'safe'],
         ];
     }
@@ -64,6 +65,12 @@ class Customer extends CustomerModel
             'user_id'          => $this->user_id,
             'date_registrated' => $this->date_registrated,
         ]);
+
+        if (is_numeric($this->isOnlineFlag)) {
+            $subQuery = "(SELECT COUNT(*) FROM " . HeartBeat::tableName() . " as h WHERE h.user_id = " . self::tableName() . ".user_id and " . self::isOnlineCondition() . ")";
+            $operator = $this->isOnlineFlag ? ' > ' : ' = ';
+            $query->andWhere($subQuery . $operator . '0');
+        }
 
         $query->andFilterWhere(['like', 'mac_address', $this->mac_address])
             ->andFilterWhere(['like', 'name', $this->name])

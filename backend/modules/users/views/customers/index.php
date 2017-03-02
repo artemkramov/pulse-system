@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use backend\components\BreadcrumbHelper;
+use common\modules\i18n\Module;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\Customer */
@@ -44,11 +45,33 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge($labels, [
                     return isset($user) ? $user->username : '';
                 }
             ],
+            [
+                'attribute' => 'isOnline',
+                'label'     => \common\modules\i18n\Module::t('Status'),
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    /**
+                     * @var \common\models\Customer $model
+                     */
+                    $class = $model->isOnline() ? 'online' : 'offline';
+                    return Html::tag('span', '', [
+                        'class' => 'customer-status fa fa-dot-circle-o ' . $class
+                    ]);
+                },
+                'filter'    => Html::activeDropDownList($searchModel, 'isOnlineFlag', [
+                        '' => '',
+                        0  => Module::t('Offline'),
+                        1  => Module::t('Online')
+                    ],
+                    [
+                        'class' => 'form-control'
+                    ])
+            ],
 
             [
-                'class' => 'yii\grid\ActionColumn',
+                'class'    => 'yii\grid\ActionColumn',
                 'buttons'  => [
-                    'heart-beat' => function ($url, $model) {
+                    'heart-beat'        => function ($url, $model) {
                         $icon = "heartbeat";
                         return Html::a('<span class="fa fa-' . $icon . '"></span> ', $url);
                     },

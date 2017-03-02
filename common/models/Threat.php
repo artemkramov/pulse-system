@@ -6,6 +6,7 @@ use common\components\Mailer;
 use common\components\WebsocketClient;
 use common\modules\i18n\Module;
 use Yii;
+use yii\db\Query;
 use yii\helpers\Url;
 
 /**
@@ -126,6 +127,28 @@ class Threat extends Bean
 //            $mailer->send();
         }
 
+    }
+
+    /**
+     * @return array
+     */
+    public static function getDiseaseStatistic()
+    {
+        $relativeData = (new Query())
+            ->from(self::tableName())
+            ->select(["COUNT(*) as relative", "alias"])
+            ->groupBy('alias')
+            ->all();
+        $generalCount = (int)self::find()->count();
+        foreach ($relativeData as $key => $data) {
+            $percentage = 0;
+            if ($generalCount != 0) {
+                $percentage = round(100 * ($data['relative'] / $generalCount), 2);
+            }
+            $relativeData[$key]['y'] = $percentage;
+            $relativeData[$key]['legendText'] = $relativeData[$key]['indexLabel'] = Module::t($data['alias']) . " " . $percentage . '%';
+        };
+        return $relativeData;
     }
 
 }

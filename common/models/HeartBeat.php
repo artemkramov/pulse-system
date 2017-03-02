@@ -126,4 +126,24 @@ class HeartBeat extends Bean
         return $time;
     }
 
+    /**
+     * @param $startTime
+     * @param $endTime
+     * @param $userID
+     * @return float|int
+     */
+    public static function getBPMInRange($startTime, $endTime, $userID)
+    {
+        $beats = self::find()
+            ->where(sprintf("`ibi` BETWEEN FROM_UNIXTIME(%s) AND FROM_UNIXTIME(%s)", $startTime, $endTime))
+            ->andWhere(["user_id" => $userID])
+            ->count();
+        $range = $endTime - $startTime;
+        $bpm = 0;
+        if ($range != 0) {
+            $bpm = round(($beats / $range) * 60);
+        }
+        return $bpm;
+    }
+
 }

@@ -3,6 +3,9 @@
 namespace backend\modules\dashboard\controllers;
 
 use backend\controllers\CRUDController;
+use common\models\search\Customer;
+use common\models\Threat;
+use common\models\User;
 use yii\web\Controller;
 
 /**
@@ -16,6 +19,26 @@ class DefaultController extends CRUDController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $onlineCustomers = Customer::getOnlineCustomers();
+        $statistic = $this->getStatistic();
+        return $this->render('index', [
+            'customers' => $onlineCustomers,
+            'statistic' => $statistic
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    private function getStatistic()
+    {
+        $data = [
+            'doctors'     => count(User::getOperators()),
+            'customers'   => Customer::find()->count(),
+            'online'      => count(Customer::getOnlineCustomers(true)),
+            'diseaseData' => Threat::getDiseaseStatistic()
+        ];
+
+        return $data;
     }
 }

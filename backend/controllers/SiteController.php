@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use common\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -55,8 +56,8 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        if (\Yii::$app->user->can('users')) {
-            $this->redirect('@web/users/users/index');
+        if (User::isAdmin()) {
+            $this->redirect('@web/dashboard/default/index');
         } else {
             $this->redirect('@web/users/customers/index');
         }

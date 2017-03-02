@@ -128,6 +128,22 @@ class AjaxController extends AuthController implements ViewContextInterface
         return HeartBeatRate::find()->orderBy('min_age')->all();
     }
 
+    /**
+     * @param $startTime
+     * @param $endTime
+     * @param $customerID
+     * @return array
+     */
+    public function actionGetBpmInRange($startTime, $endTime, $customerID)
+    {
+        /**
+         * @var Customer $customer
+         */
+        $customer = Customer::findOne($customerID);
+        return [
+            'bpm' => HeartBeat::getBPMInRange($startTime, $endTime, $customer->user_id)
+        ];
+    }
 
 }
  

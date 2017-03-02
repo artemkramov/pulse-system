@@ -302,19 +302,19 @@ class SiteHelper extends \yii\base\Component
                  ['label' => Module::t('Threats'), 'icon' => 'fa fa-medkit', 'url' => ['/users/threats/index']],
              ]
             ],
-            ['label' => Module::t('Content'), 'icon' => 'fa fa-navicon', 'url' => '#',
-             'items' => [
-                 ['label' => Module::t('Posts'), 'url' => ['/content/posts/index'], 'icon' => 'fa fa-list'],
-                 ['label' => Module::t('Menu'), 'url' => ['/content/menus/index'], 'icon' => 'fa fa-circle'],
-                 ['label' => Module::t('Menu types'), 'url' => ['/content/menu-types/index'], 'icon' => 'fa fa-circle'],
-                 ['label' => Module::t('Sliders'), 'url' => ['/content/sliders/index'], 'icon' => 'fa fa-circle'],
-             ]
-            ],
+//            ['label' => Module::t('Content'), 'icon' => 'fa fa-navicon', 'url' => '#',
+//             'items' => [
+//                 ['label' => Module::t('Posts'), 'url' => ['/content/posts/index'], 'icon' => 'fa fa-list'],
+//                 ['label' => Module::t('Menu'), 'url' => ['/content/menus/index'], 'icon' => 'fa fa-circle'],
+//                 ['label' => Module::t('Menu types'), 'url' => ['/content/menu-types/index'], 'icon' => 'fa fa-circle'],
+//                 ['label' => Module::t('Sliders'), 'url' => ['/content/sliders/index'], 'icon' => 'fa fa-circle'],
+//             ]
+//            ],
             ['label' => Module::t('Login'), 'url' => ['site/login'], 'visible' => \Yii::$app->user->isGuest],
             ['label' => Module::t('Settings'), 'icon' => 'fa fa-cog', 'url' => '#',
              'items' => [
-                 ['label' => Module::t('Heart beat table'), 'icon' => 'fa fa-circle-o', 'url' => ['/settings/settings/heart-beat-rate']],
-                 ['label' => Module::t('Settings'), 'icon' => 'fa fa-circle-o', 'url' => ['/settings/settings/index']],
+//                 ['label' => Module::t('Heart beat table'), 'icon' => 'fa fa-circle-o', 'url' => ['/settings/settings/heart-beat-rate']],
+//                 ['label' => Module::t('Settings'), 'icon' => 'fa fa-circle-o', 'url' => ['/settings/settings/index']],
                  ['label' => Module::t('Translations'), 'url' => ['/i18n'], 'icon' => 'fa fa-book'],
              ]
             ],

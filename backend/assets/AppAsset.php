@@ -33,7 +33,6 @@ class AppAsset extends AssetBundle
         'js/bonsai/jquery.qubit.js',
         'js/bonsai/jquery.bonsai.js',
         'js/turn/turn.min.js',
-        'http://vjs.zencdn.net/5.10.8/video.js',
         'js/canvasjs.min.js',
         'js/underscore-min.js',
         'js/jquery.noty.packaged.min.js',

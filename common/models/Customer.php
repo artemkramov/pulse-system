@@ -8,6 +8,7 @@ use backend\health\IDisease;
 use common\modules\i18n\Module;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "customer".
@@ -33,6 +34,11 @@ class Customer extends Bean
     const ROLE_NAME = 'customer';
 
     const TABLE_CUSTOMER_OPERATOR = 'customer_operator';
+
+    /**
+     * @var bool
+     */
+    public $isOnlineFlag;
 
     /**
      * @inheritdoc
@@ -258,6 +264,28 @@ class Customer extends Bean
     }
 
     /**
+     * @return bool
+     */
+    public function isOnline()
+    {
+        $numRows = HeartBeat::find()
+            ->where([
+                'user_id' => $this->user_id
+            ])
+            ->andWhere(self::isOnlineCondition())
+            ->count();
+        return $numRows > 0 ? true : false;
+    }
+
+    /**
+     * @return string
+     */
+    protected static function isOnlineCondition()
+    {
+        return "`ibi` BETWEEN DATE_SUB(NOW(),INTERVAL 10 SECOND) AND NOW()";
+    }
+
+    /**
      * @return array|null|\yii\db\ActiveRecord
      */
     public function getBoundaryConditions()
@@ -265,20 +293,15 @@ class Customer extends Bean
         $data = new HeartBeatRate();
         $data->min_beat = $this->min_beat;
         $data->max_beat = $this->max_beat;
-//        $data = HeartBeatRate::find()
-//            ->where([
-//                '<', 'min_age', $this->age
-//            ])
-//            ->andWhere([
-//                '>=', 'max_age', $this->age
-//            ])
-//            ->one();
-//        if (empty($data)) {
-//            $data = HeartBeatRate::find()
-//                ->orderBy(['max_age' => SORT_DESC])
-//                ->one();
-//        }
         return $data;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMonitorLink()
+    {
+        return Url::to(['/users/customers/heart-beat', 'id' => $this->id]);
     }
 
     /**
@@ -298,5 +321,21 @@ class Customer extends Bean
             $query->select([$keyField, $valueField])->asArray();
         }
         return ArrayHelper::map($query->all(), $keyField, $valueField);
+    }
+
+    /**
+     * @param $all
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getOnlineCustomers($all = false)
+    {
+        $query = self::find()
+            ->innerJoin(HeartBeat::tableName(), HeartBeat::tableName() . '.user_id = ' . self::tableName() . '.user_id')
+            ->where(self::isOnlineCondition())
+            ->distinct();
+         if (!$all) {
+             $query->limit(5);
+         }
+         return $query->all();
     }
 }

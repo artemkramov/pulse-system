@@ -322,3 +322,20 @@ li.error {
 .notification-more-details {
     text-align: left;
 }
+
+.customer-status {
+    display: block;
+    text-align: center;
+}
+.customer-status.online {
+    color: #00A000;
+}
+.customer-status.offline {
+    display: none;
+    color: #ff200f;
+}
+.chart-report-bpm-block {
+    margin-top: 20px;
+    font-size: 1.5em;
+    display: none;
+}

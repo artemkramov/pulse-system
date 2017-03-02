@@ -70,6 +70,12 @@ $this->registerJsFile(\yii\helpers\Url::home() . '/js/Report.js', ['depends' => 
 
 <? \yii\bootstrap\ActiveForm::end(); ?>
 
+<div class="chart-report-bpm-block row">
+    <div class="col-sm-12">
+        <label><?= Module::t('Beats per minute') ?>: <span id="beats-per-minute">-</span></label>
+    </div>
+</div>
+
 <div id="chart-container" style="height: 300px; width: 100%;" data-customer-name="<?= $model->name ?>"></div>
 
 <div class="row">

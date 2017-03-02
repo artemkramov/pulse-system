@@ -45,6 +45,23 @@ var Report = (function () {
      */
     var templatePrintPlot = "#template-print-plot";
 
+    /**
+     * Block with the bpm data
+     * @type {string}
+     */
+    var bpmBlock = ".chart-report-bpm-block";
+
+    /**
+     * BPM DOM element
+     * @type {string}
+     */
+    var bpmValue = "#beats-per-minute";
+
+    /**
+     * Customer ID
+     */
+    var customerID = undefined;
+
     return {
         /**
          * Init all events
@@ -68,14 +85,17 @@ var Report = (function () {
                         endTime: $(this).find(inputEndTime).val(),
                         customerID: $(this).find(inputCustomerID).val()
                     };
+                    $(bpmBlock).hide();
                     App.sendAjax({
                         url: '/admin/ajax/load-graph-data',
                         data: data,
                         success: function (response) {
                             $("body").removeClass('loading');
+                            $(bpmBlock).show();
                             dataPoints = response;
                             self.initDataPoints();
                             self.updateChart();
+
                         }
                     });
                     return false;
@@ -99,13 +119,17 @@ var Report = (function () {
                 $(inputEndTime).val(lastDate.toString(jsDateFormat));
                 dataPoints.forEach(function (point) {
                     point.x = new Date(point.x);
-                })
+                });
+                var startTime = firstDate.getTime() / 1000;
+                var endTime = lastDate.getTime() / 1000;
+                this.refreshBPM(startTime, endTime, this.getCustomerID());
             }
         },
         /**
          * Add point to the chart
          */
         updateChart: function () {
+            var self = this;
             var customerName = $("#chart-container").data("customer-name");
             var chart = new CanvasJS.Chart("chart-container", {
                 title: {
@@ -119,7 +143,18 @@ var Report = (function () {
                     viewportMinimum: -1,
                     viewportMaximum: 1.5
                 },
-                zoomEnabled: true
+                zoomEnabled: true,
+                rangeChanged: function (e) {
+                    var startTime = e.axisX[0].viewportMinimum;
+                    var endTime = e.axisX[0].viewportMaximum;
+                    if (e.trigger == "reset") {
+                        startTime = e.chart.axisX[0].minimum;
+                        endTime = e.chart.axisX[0].maximum;
+                    }
+                    startTime /= 1000;
+                    endTime /= 1000;
+                    self.refreshBPM(startTime, endTime, self.getCustomerID());
+                }
             });
             chart.render();
         },
@@ -143,6 +178,36 @@ var Report = (function () {
             printWindow.focus();
             printWindow.print();
             printWindow.close();
+        },
+        /**
+         * Refresh BPM value
+         * @param startTime
+         * @param endTime
+         * @param customerID
+         */
+        refreshBPM: function (startTime, endTime, customerID) {
+            App.sendAjax({
+                url: '/admin/ajax/get-bpm-in-range',
+                type: 'get',
+                data: {
+                    startTime: startTime,
+                    endTime: endTime,
+                    customerID: customerID
+                },
+                success: function (response) {
+                    $(bpmValue).html(response.bpm);
+                }
+            }, false);
+        },
+        /**
+         * Get current customer ID
+         * @returns {undefined}
+         */
+        getCustomerID: function () {
+            if (_.isUndefined(customerID)) {
+                customerID = $("#customer-id").val();
+            }
+            return customerID;
         }
     };
 })();
