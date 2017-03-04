@@ -25,8 +25,11 @@ class CronComponent
             /**
              * @var Customer $customer
              */
+            if (!$customer->isOnline()) {
+                continue;
+            }
             $pulseData = $customer->getPulseDataForDisease();
-            if ($customer->id == 30)
+            if ($customer->id == 301)
                 //$pulseData = $customer->testGetPulseDataForTachycardia();
                 $pulseData = $customer->testGetPulseDataForBradycardia();
             if (empty($pulseData)) {
@@ -40,8 +43,9 @@ class CronComponent
                     $threat = new Threat();
                     $threat->customer_id = $customer->id;
                     $threat->alias = $disease->getAlias();
-                    $threat->bpm = $disease->getBPM($pulseData);
+                    $threat->bpm = $customer->getBeatsPerMinute();
                     $threat->save();
+                    break;
                 }
             }
         }

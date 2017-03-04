@@ -29,7 +29,7 @@ class Tachycardia extends IDisease
          */
         $isDisease = false;
         $rate = $customer->getBoundaryConditions();
-        $pulseCount = $this->getBPM($pulseData);
+        $pulseCount = $customer->getBeatsPerMinute();
         if ($pulseCount > $rate->max_beat) {
             $isDisease = true;
         }

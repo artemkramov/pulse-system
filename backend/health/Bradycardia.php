@@ -29,7 +29,7 @@ class Bradycardia extends IDisease
          */
         $isDisease = false;
         $rate = $customer->getBoundaryConditions();
-        $pulseCount = $this->getBPM($pulseData);
+        $pulseCount = $customer->getBeatsPerMinute();
         if ($pulseCount < $rate->min_beat) {
             $isDisease = true;
         }
