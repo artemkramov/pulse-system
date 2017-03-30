@@ -314,9 +314,14 @@ class Customer extends Bean
     {
         $accessHelper = new AccessHelper();
         $customerIds = $accessHelper->getFilter();
-        $query = static::find()->where([
-            'in', 'id', $customerIds
-        ]);
+
+        $query = static::find();
+        if (!User::isAdmin()) {
+            $query->where([
+                'in', 'id', $customerIds
+            ]);
+        }
+
         if ($asArray) {
             $query->select([$keyField, $valueField])->asArray();
         }

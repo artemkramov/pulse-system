@@ -6,6 +6,7 @@ use backend\components\AccessHelper;
 use backend\controllers\CRUDController;
 use common\models\Threat;
 use common\models\Search\ThreatSearch;
+use common\models\User;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -39,7 +40,7 @@ class ThreatsController extends CRUDController
         $threat = $this->findModel($id);
         $accessHelper = new AccessHelper();
         $customerIds = $accessHelper->getFilter();
-        if (!in_array($threat->customer_id, $customerIds)) {
+        if (!in_array($threat->customer_id, $customerIds) && !User::isAdmin()) {
             throw new ForbiddenHttpException();
         }
         return parent::actionView($id, $returnModel, $extraParams);

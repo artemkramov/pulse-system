@@ -20,10 +20,10 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge($labels, [
 
     <p>
         <?= \backend\widgets\FormButtons::widget([
-            'model' =>  false,
-            'type'  =>  'create',
-            'modelLabel'    =>  $labels['singular']
-        ]);?>
+            'model'      => false,
+            'type'       => 'create',
+            'modelLabel' => $labels['singular']
+        ]); ?>
     </p>
 
     <?= GridView::widget([
@@ -42,6 +42,7 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge($labels, [
             ],
             [
                 'attribute' => 'subscription',
+                'label'     => Module::t('Subscription'),
                 'value'     => function ($model) {
                     return \backend\components\SiteHelper::getCheckboxSign($model->subscription);
                 },

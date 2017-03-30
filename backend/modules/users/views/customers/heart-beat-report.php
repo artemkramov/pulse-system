@@ -22,6 +22,8 @@ $this->registerJsFile(\yii\helpers\Url::home() . '/js/Report.js', ['depends' => 
     'enableAjaxValidation'   => true,
     'enableClientValidation' => false,
     'id'                     => 'range-form',
+    'validateOnBlur'         => false,
+    'validateOnChange'       => false,
     'validationUrl'          => \yii\helpers\Url::to(['validate-heart-beat-range', 'id' => $model->id]),
     'options'                => ['enctype' => 'multipart/form-data']
 ]); ?>
